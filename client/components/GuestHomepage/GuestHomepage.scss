@@ -1,0 +1,47 @@
+.masthead {
+  background-color:#eeeeee;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-image: url('./img/splashImage-2048x719.jpg');
+  background-repeat: no-repeat;
+  height:480px; 
+  border-radius: 0 !important;
+  @include background-cover;
+
+  .introBody {
+    color:FFFF00;
+    @include tester-font;
+    .container {
+      padding-top: 60;
+      max-width:100%;
+      .introHeading {
+        color:009900;
+      }
+      .introText {
+        margin-bottom:15px;
+        font-size:21px;
+        font-weight:200;
+      }
+    }
+  }
+
+  @media (min-width:768px){
+    padding-top: 50px;
+    padding-bottom: 50px;
+    .container {
+      padding-right: 60px;
+      padding-left: 60px;
+    }
+    .h1 {
+      font-size: 63px;
+    }
+  }
+
+  @media (max-width:768px){
+    padding-top: 32px;
+    padding-bottom: 32px;
+    background-position-x:30%;
+    height:420px;
+  }
+
+}
