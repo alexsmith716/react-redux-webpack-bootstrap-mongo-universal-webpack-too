@@ -9,7 +9,7 @@ module.exports = {
 
   entry: {
     main: [
-      'bootstrap-loader',
+      './client/assets/scss/theme/theme.scss',
       './client/index.entry.js',
     ],
     vendor: [
@@ -18,7 +18,10 @@ module.exports = {
       'react-redux',
       'react-router',
       'react-router-dom',
-      'redux'
+      'redux',
+      'jquery',
+      'popper.js',
+      'bootstrap',
     ],
   },
 
@@ -68,6 +71,7 @@ module.exports = {
       },
       {
         test: /\.(scss)$/,
+        include: [ path.resolve(rootPath, 'client/assets/scss') ],
         use: [
           {
             loader: 'style-loader'
@@ -75,14 +79,17 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[name]__[local]__[hash:base64:5]',
-              // importLoaders: 3,
               sourceMap: true
             }
           },
           {
             loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'resolve-url-loader',
             options: {
               sourceMap: true
             }
@@ -95,11 +102,39 @@ module.exports = {
               sourceMapContents: true
             }
           },
+        ]
+      },
+      {
+        test: /\.(scss)$/,
+        exclude: [ path.resolve(rootPath, 'client/assets/scss') ],
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
           {
             loader: 'sass-resources-loader',
             options: {
               resources: [
-                path.resolve(__dirname, '../client/assets/scss/mixins/mixins.scss'),
+                path.resolve(rootPath, 'client/assets/scss/mixins/mixins.scss')
               ],
             },
           },
@@ -146,6 +181,26 @@ module.exports = {
             },
           },
         ]
+      },
+      {
+        test: '/popper.js/',
+        use: [{
+          loader: 'expose-loader',
+          options: 'popper',
+        },{
+          loader: 'expose-loader',
+          options: 'Popper',
+        }]
+      },
+      {
+        test: '/jquery/',
+        use: [{
+          loader: 'expose-loader',
+          options: 'jQuery',
+        },{
+          loader: 'expose-loader',
+          options: '$',
+        }]
       },
     ]
   },

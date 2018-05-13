@@ -18,32 +18,35 @@ const Html = props => {
   // >>>>>> HTML.JS > Object.keys(assets.styles):  []
   // >>>>>> HTML.JS > Object.keys(assets.styles).length:  0
   // >>>>>> HTML.JS > assets.styles:  {}
-  // >>>>>> HTML.JS > assets:  { javascript: 
-  //    { main: 'http://localhost:3001/assets/main.de3e0aca178f6704d5c2.js',
-  //      vendor: 'http://localhost:3001/assets/vendor.de3e0aca178f6704d5c2.js',
-  //      'vendors-main': 'http://localhost:3001/assets/vendors-main.28f1e3874b41014ccf7f.js',
-  //      'vendors-main-vendor': 'http://localhost:3001/assets/vendors-main-vendor.a167806953b97bdb28e9.js',
-  //      'vendors-vendor': 'http://localhost:3001/assets/vendors-vendor.28576e1e3d4e1f93aa9f.js' },
-  //   styles: {} }
+  // >>>>>> HTML.JS > assets:
+  //          {
+  //            javascript: {
+  //               main: 'http://localhost:3001/assets/main.32acf2177a9afde94f52.js',
+  //               vendor: 'http://localhost:3001/assets/vendor.32acf2177a9afde94f52.js',
+  //               'vendors-main': 'http://localhost:3001/assets/vendors-main.347d3dbb2465390cff98.js',
+  //               'vendors-main-vendor': 'http://localhost:3001/assets/vendors-main-vendor.edddff066a51023d420a.js',
+  //               'vendors-vendor': 'http://localhost:3001/assets/vendors-vendor.558be7861b6e9c645b4b.js'
+  //            },
+  //            styles: {}
+  //          }
 
   // PRODUCTION -------------------------------------------------------------------------------------------
-  // >>>>>> HTML.JS > Object.keys(assets.styles):  [ 'vendors-main', 'main' ]
-  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  2
-  // >>>>>> HTML.JS > assets.styles:  { 'vendors-main': '/public/assets/vendors-main.2.css', main: '/public/assets/main.4.css' }
+  // >>>>>> HTML.JS > Object.keys(assets.styles):  [ 'main' ]
+  // >>>>>> HTML.JS > Object.keys(assets.styles).length:  1
+  // >>>>>> HTML.JS > assets.styles:  { main: '/assets/main-741466ca48ed79dc2012.css' }
   // >>>>>> HTML.JS > assets:
-  // {
-  //   javascript: {
-  //     'vendors-main-vendor': '/public/assets/vendors-main-vendor.e4e111bbca694daa0f88.js',
-  //     'vendors-vendor': '/public/assets/vendors-vendor.b22cefbd3f41edbffaed.js',
-  //     'vendors-main': '/public/assets/vendors-main.c780dc044dba75bba09d.js',
-  //     vendor: '/public/assets/vendor.815980ec1d5a2ba57fde.js',
-  //     main: '/public/assets/main.815980ec1d5a2ba57fde.js'
-  //   },
-  //   styles: {
-  //     'vendors-main': '/public/assets/vendors-main.2.css',
-  //     main: '/public/assets/main.4.css'
-  //   }
-  // }
+  //          {
+  //            javascript: {
+  //              'vendors-main-vendor': '/assets/vendors-main-vendor.373f0ceae0e473152863.js',
+  //              'vendors-vendor': '/assets/vendors-vendor.8f342a52dd90676af9f9.js',
+  //              'vendors-main': '/assets/vendors-main.06f54542f83c53136f44.js',
+  //              vendor: '/assets/vendor.c7a9cacd553a764f2653.js',
+  //              main: '/assets/main.c7a9cacd553a764f2653.js'
+  //            },
+  //            styles: {
+  //              main: '/assets/main-741466ca48ed79dc2012.css'
+  //            }
+  //          }
   
   return (
 
@@ -88,10 +91,10 @@ const Html = props => {
       </head>
       <body>
 
-        {/* () */}
+        {/* (>>>>>>> CONTENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
         <div id="content" dangerouslySetInnerHTML={{ __html: content }} ></div>
 
-        {/* () */}
+        {/* (>>>>>>> STORE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
         {store && (
           <script
             dangerouslySetInnerHTML={{ __html: `window.__data=${serialize(store.getState())};` }}
@@ -99,11 +102,11 @@ const Html = props => {
           ></script>
         )}
 
-        {/* () */}
-        {Object.keys(assets.javascript)
-          .filter(key => key.includes('main') || key.includes('vendor') || key.includes('vendors'))
-          .reverse()
-          .map(key => <script key={key} src={assets.javascript[key]}></script>)}
+        {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
+        {Object.keys(assets.javascript).length > 0 &&
+          Object.keys(assets.javascript)
+            .reverse()
+            .map(key => <script key={key} src={assets.javascript[key]}></script>)}
 
       </body>
     </html>
