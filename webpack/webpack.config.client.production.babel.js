@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -19,6 +21,15 @@ const serverPath = path.resolve(configuration.context, './build/server');
 
 // configuration.devtool = 'source-map';
 configuration.devtool = 'hidden-source-map';
+
+configuration.optimization.minimizer = [
+  new UglifyJsPlugin({
+    cache: true,
+    parallel: true,
+    sourceMap: true,
+  }),
+  new OptimizeCSSAssetsPlugin({})
+];
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
