@@ -18,35 +18,25 @@ const Html = props => {
   // >>>>>> HTML.JS > Object.keys(assets.styles):  []
   // >>>>>> HTML.JS > Object.keys(assets.styles).length:  0
   // >>>>>> HTML.JS > assets.styles:  {}
-  // >>>>>> HTML.JS > assets:
-  //          {
-  //            javascript: {
-  //               main: 'http://localhost:3001/assets/main.32acf2177a9afde94f52.js',
-  //               vendor: 'http://localhost:3001/assets/vendor.32acf2177a9afde94f52.js',
-  //               'vendors-main': 'http://localhost:3001/assets/vendors-main.347d3dbb2465390cff98.js',
-  //               'vendors-main-vendor': 'http://localhost:3001/assets/vendors-main-vendor.edddff066a51023d420a.js',
-  //               'vendors-vendor': 'http://localhost:3001/assets/vendors-vendor.558be7861b6e9c645b4b.js'
-  //            },
-  //            styles: {}
-  //          }
+  // >>>>>> HTML.JS > assets:  { javascript: 
+  //    { main: 'http://localhost:3001/assets/main.1477b7d5a2530eebb1a3.js',
+  //      vendor: 'http://localhost:3001/assets/vendor.1477b7d5a2530eebb1a3.js',
+  //      'vendors-main': 'http://localhost:3001/assets/vendors-main.3afdb594fc0a4022d7da.js',
+  //      'vendors-main-vendor': 'http://localhost:3001/assets/vendors-main-vendor.fa7ad64be4f3caa2531d.js',
+  //      'vendors-vendor': 'http://localhost:3001/assets/vendors-vendor.558be7861b6e9c645b4b.js' },
+  //   styles: {} }
 
   // PRODUCTION -------------------------------------------------------------------------------------------
   // >>>>>> HTML.JS > Object.keys(assets.styles):  [ 'main' ]
   // >>>>>> HTML.JS > Object.keys(assets.styles).length:  1
   // >>>>>> HTML.JS > assets.styles:  { main: '/assets/main-741466ca48ed79dc2012.css' }
-  // >>>>>> HTML.JS > assets:
-  //          {
-  //            javascript: {
-  //              'vendors-main-vendor': '/assets/vendors-main-vendor.373f0ceae0e473152863.js',
-  //              'vendors-vendor': '/assets/vendors-vendor.8f342a52dd90676af9f9.js',
-  //              'vendors-main': '/assets/vendors-main.06f54542f83c53136f44.js',
-  //              vendor: '/assets/vendor.c7a9cacd553a764f2653.js',
-  //              main: '/assets/main.c7a9cacd553a764f2653.js'
-  //            },
-  //            styles: {
-  //              main: '/assets/main-741466ca48ed79dc2012.css'
-  //            }
-  //          }
+  // >>>>>> HTML.JS > assets:  { javascript: 
+  //    { 'vendors-main-vendor': '/assets/vendors-main-vendor.974b806033a7bba944d4.js',
+  //      'vendors-vendor': '/assets/vendors-vendor.7cb9126fcebdcdd7a169.js',
+  //      'vendors-main': '/assets/vendors-main.2385dc9ef36d5746edc2.js',
+  //      vendor: '/assets/vendor.423863f32e02f2f88f2a.js',
+  //      main: '/assets/main.423863f32e02f2f88f2a.js' },
+  //   styles: { main: '/assets/main-741466ca48ed79dc2012.css' } }
   
   return (
 

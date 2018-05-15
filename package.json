@@ -22,11 +22,11 @@
     "production:services": "npm-run-all --parallel production:client:rendering-service"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.47",
     "async": "^2.6.0",
     "autoprefixer": "^8.2.0",
     "axios": "^0.18.0",
-    "babel-core": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-register": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
@@ -116,6 +116,7 @@
     "morgan": "^1.9.0",
     "node-sass": "^4.9.0",
     "nodemon": "^1.17.4",
+    "optimize-css-assets-webpack-plugin": "^4.0.1",
     "piping": "^1.0.0-rc.4",
     "postcss-browser-reporter": "^0.5.0",
     "postcss-calc": "^6.0.1",
