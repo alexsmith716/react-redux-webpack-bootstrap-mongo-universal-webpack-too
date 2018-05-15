@@ -86,9 +86,9 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              config: {
-                path: 'postcss.config.js',
-              },
+              // config: {
+              //   path: 'postcss.config.js',
+              // },
             }
           },
           {
@@ -125,6 +125,9 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
+              // config: {
+              //   path: 'postcss.config.js',
+              // },
             }
           },
           {
