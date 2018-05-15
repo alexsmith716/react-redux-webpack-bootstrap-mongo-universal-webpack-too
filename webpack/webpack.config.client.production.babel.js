@@ -24,11 +24,33 @@ configuration.devtool = 'hidden-source-map';
 
 configuration.optimization.minimizer = [
   new UglifyJsPlugin({
-    cache: true,
-    parallel: true,
-    sourceMap: true,
+    // test: ,  // {RegExp|Array<RegExp>}   /\.js$/i  Test to match files against
+    // include: ,  // {RegExp|Array<RegExp>}  undefined   Files to include
+    // exclude: ,  // {RegExp|Array<RegExp>}  undefined   Files to exclude
+    cache: false,      // Enable file caching (default: false)
+    parallel: true,   // Use multi-process parallel running to improve the build speed (default: false)
+    sourceMap: false, // Use source maps to map error message locations to modules (default: false)
+    extractComments: false, // Whether comments shall be extracted to a separate file (default: false)
+    uglifyOptions: {
+      ecma: 8, // Supported ECMAScript Version (default undefined)
+      warnings: false, // Display Warnings (default false)
+      mangle: true, // Enable Name Mangling (default true)
+      compress: {
+        passes: 2  // The maximum number of times to run compress (default: 1)
+      },
+      output: {
+        beautify: false, // whether to actually beautify the output (default true)
+        comments: false, // true or "all" to preserve all comments, "some" to preserve some (default false)
+      },
+      ie8: false, // Enable IE8 Support (default false)
+      safari10: false, // Enable work around Safari 10/11 bugs in loop scoping and await (default false)
+    }
   }),
-  new OptimizeCSSAssetsPlugin({})
+  new OptimizeCSSAssetsPlugin({
+    cssProcessor: require('cssnano'), // cssnano >>> default optimize \ minimize css processor 
+    cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
+    canPrint: true, // indicating if the plugin can print messages to the console (default true)
+  }),
 ];
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
