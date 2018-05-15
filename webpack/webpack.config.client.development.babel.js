@@ -1,9 +1,9 @@
-import webpack from 'webpack';
-import path from 'path';
-import base_configuration from './webpack.config';
-import application_configuration from '../configuration';
-import { clientConfiguration } from 'universal-webpack';
-import settings from './universal-webpack-settings';
+const webpack = require('webpack');
+const path = require('path');
+const base_configuration = require('./webpack.config');
+const application_configuration = require('../configuration');
+const settings = require('./universal-webpack-settings');
+const { clientConfiguration } = require('universal-webpack');
 
 const rootPath = path.resolve(__dirname, '..');
 
@@ -52,7 +52,7 @@ configuration.output.publicPath = `http://${application_configuration.webpack.de
 
 console.log('>>>>>> webpack.config.client.development.babel.js > configuration.output.publicPath: ', configuration.output.publicPath);
 
-// `webpack-serve` settings.
+// `webpack-serve` Config settings.
 configuration.serve = {
   port : application_configuration.webpack.devserver.port,
   dev  : {
