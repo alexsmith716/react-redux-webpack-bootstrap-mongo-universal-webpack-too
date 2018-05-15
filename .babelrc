@@ -22,8 +22,10 @@
 
 // Env preset:
 // 
+//   * (enables Babel 6 to support ES2015)
 //   * Configure it to only include the polyfills and transforms needed for the browsers you support
 //   * Compiling only what’s needed can make your bundles smaller and your life easier
+//   * (setting module option "false" will not transform ES6 module syntax to another module type (i.e. CommonJS))
 
 // https://reactjs.org/docs/dom-elements.html
 // Plugins run before Presets.

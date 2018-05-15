@@ -1,8 +1,7 @@
-import merge from 'lodash/merge';
-
-import default_configuration from './configuration.defaults';
-import development_configuration from './configuration.development';
-import production_configuration from './configuration.production';
+const merge = require('lodash/merge');
+const default_configuration = require('./configuration.defaults');
+const development_configuration = require('./configuration.development');
+const production_configuration = require('./configuration.production');
 
 const configuration = merge({}, default_configuration);
 

@@ -184,23 +184,29 @@ module.exports = {
       },
       {
         test: '/popper.js/',
-        use: [{
-          loader: 'expose-loader',
-          options: 'popper',
-        },{
-          loader: 'expose-loader',
-          options: 'Popper',
-        }]
+        use: [
+          {
+            loader: 'expose-loader',
+            options: 'Popper',
+          },
+        ]
       },
       {
         test: '/jquery/',
-        use: [{
-          loader: 'expose-loader',
-          options: 'jQuery',
-        },{
-          loader: 'expose-loader',
-          options: '$',
-        }]
+        use: [
+          {
+            loader: 'expose-loader',
+            options: '$',
+          },
+          {
+            loader: 'expose-loader',
+            options: 'jQuery',
+          },
+          {
+            loader: 'expose-loader',
+            options: 'jquery',
+          },
+        ]
       },
     ]
   },

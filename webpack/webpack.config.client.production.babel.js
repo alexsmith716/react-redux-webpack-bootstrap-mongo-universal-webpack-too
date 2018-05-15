@@ -1,12 +1,12 @@
-import path from 'path';
-import webpack from 'webpack';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
-import Visualizer from 'webpack-visualizer-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+const webpack = require('webpack');
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const Visualizer = require('webpack-visualizer-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { clientConfiguration } = require('universal-webpack');
 
-import { clientConfiguration } from 'universal-webpack';
-import settings from './universal-webpack-settings';
-import base_configuration from './webpack.config';
+const settings = require('./universal-webpack-settings');
+const base_configuration = require('./webpack.config');
 
 // With `development: false` all CSS will be extracted into a file
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
