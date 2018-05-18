@@ -10,3 +10,15 @@
   -o-background-size: cover;
   background-size: cover;
 }
+
+@mixin display-flex-align-content-center() {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}

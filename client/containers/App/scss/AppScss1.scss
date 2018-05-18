@@ -5,14 +5,11 @@
     color: #00BFFF;
     // cursor: pointer;
   }
-
-  // nav :global(.fa) {
-  // 
-  // }
 }
 
 .appContent {
-  padding-top: calculate-rem(56px);
+  margin-top: calculate-rem(56px);
+  // margin-bottom: calculate-rem(10px);
   position: relative;
 }
 
@@ -22,14 +19,11 @@
 }
 
 .footer {
-  background: #473C8B; // slateblue 4: #473C8B
+  background: #388E8E;
 }
 
-// :global() {
-//   
-// }
-
-
+// sgi teal:            388E8E
+// slateblue 4:         473C8B
 // lightsteelblue 1:    00BFFF
 // deepskyblue 1:       CAE1FF
 // gray 63:             A1A1A1
