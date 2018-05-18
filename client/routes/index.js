@@ -5,18 +5,17 @@ import { App, Home, NotFound } from '../containers';
 
 import Login from '../containers/Login/Login';
 import Register from '../containers/Register/Register';
+import LoginSuccess from 'containers/LoginSuccess/Loadable';
 import About from '../containers/About/About';
 
 const locationHelper = locationHelperBuilder({});
 
-/*
-const isAuthenticated = connectedRouterRedirect({
-  authenticatedSelector: state => !!state.auth.user,
-  redirectPath: '/login',
-  redirectAction: routerActions.replace,
-  wrapperDisplayName: 'UserIsAuthenticated'
-});
-*/
+// const isAuthenticated = connectedRouterRedirect({
+//   authenticatedSelector: state => !!state.auth.user,
+//   redirectPath: '/login',
+//   redirectAction: routerActions.replace,
+//   wrapperDisplayName: 'UserIsAuthenticated'
+// });
 
 const isNotAuthenticated = connectedRouterRedirect({
   authenticatedSelector: state => !state.auth.user,
@@ -30,10 +29,11 @@ const routes = [{
   component: App,
   routes: [
     { path: '/', exact: true, component: Home },
-    { path: '/login', component: isNotAuthenticated(Login) },
-    { path: '/register', component: isNotAuthenticated(Register) },
     { path: '/about', component: About },
-    { component: NotFound }
+    { path: '/login', component: isNotAuthenticated(Login) },
+    { path: '/login-success', component: isAuthenticated(LoginSuccess) },
+    { path: '/register', component: isNotAuthenticated(Register) },
+    { component: NotFound },
   ],
 }];
 

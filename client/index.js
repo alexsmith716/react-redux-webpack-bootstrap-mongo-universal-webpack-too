@@ -40,33 +40,22 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>> CLIENT.JS > __DEVTOOLS__ !!!!!: ', __DEVTO
   const store = createStore(history, client, data, offlinePersistConfig);
   console.log('>>>>>>>>>>>>>>>>>>> CLIENT.JS > store: ', store);
 
+  // Mark application as hot reloadable. Opposed to hot helper
+
   const hydrate = _routes => {
     ReactDOM.hydrate(
-      <Provider store={store}>
-        <BrowserRouter>
-          <ReduxAsyncConnect routes={_routes} helpers={{ client }} />
-        </BrowserRouter>
-      </Provider>
+      <HotEnabler>
+        <Provider store={store}>
+          <BrowserRouter>
+            <ReduxAsyncConnect routes={_routes} helpers={{ client }} />
+          </BrowserRouter>
+        </Provider>
+      </HotEnabler>
       , dest
     );
   };
 
   hydrate(routes);
-
-  // const hydrate = _routes => {
-  //   ReactDOM.hydrate(
-  //     <HotEnabler>
-  //       <Provider store={store}>
-  //         <BrowserRouter>
-  //           <ReduxAsyncConnect routes={_routes} helpers={{ client }} />
-  //         </BrowserRouter>
-  //       </Provider>
-  //     </HotEnabler>
-  //     , dest
-  //   );
-  // };
-
-  // hydrate(routes);
 
   if (module.hot) {
     console.log('>>>>>>>>>>>>>>>>>>> CLIENT.JS > MODULE.HOT! <<<<<<<<<<<<<<<<<');
