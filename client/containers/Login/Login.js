@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import LoginForm from '../../components/LoginForm/LoginForm';
+// import GithubLogin from 'components/GithubLogin/GithubLogin';
 import * as authActions from '../../redux/modules/auth';
 import * as notifActions from '../../redux/modules/notifs';
 
 @connect(state => ({ user: state.auth.user }), { ...notifActions, ...authActions })
+
+@withRouter
 
 export default class Login extends Component {
   static propTypes = {

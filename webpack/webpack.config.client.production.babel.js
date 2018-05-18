@@ -36,7 +36,7 @@ configuration.optimization.minimizer = [
       warnings: false, // Display Warnings (default false)
       mangle: true, // Enable Name Mangling (default true)
       compress: {
-        passes: 2  // The maximum number of times to run compress (default: 1)
+        passes: 2,  // The maximum number of times to run compress (default: 1)
       },
       output: {
         beautify: false, // whether to actually beautify the output (default true)
@@ -46,6 +46,7 @@ configuration.optimization.minimizer = [
       safari10: false, // Enable work around Safari 10/11 bugs in loop scoping and await (default false)
     }
   }),
+
   new OptimizeCSSAssetsPlugin({
     cssProcessor: require('cssnano'), // cssnano >>> default optimize \ minimize css processor 
     cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}

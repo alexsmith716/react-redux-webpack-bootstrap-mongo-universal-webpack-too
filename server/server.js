@@ -193,7 +193,7 @@ export default function (parameters) {
     const client = apiClient(req);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > apiClient !!');
   
-    const history = createMemoryHistory({ initialEntries: [url] });
+    const history = createMemoryHistory({ initialEntries: [req.originalUrl] });
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > createMemoryHistory !!');
   
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! > createStore !!');
