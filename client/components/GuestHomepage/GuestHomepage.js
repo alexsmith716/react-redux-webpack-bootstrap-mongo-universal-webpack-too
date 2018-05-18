@@ -4,9 +4,10 @@ import React from 'react';
 
 const GuestHomepage = () => {
 
-  const styles = require('./scss/ContentContainerScss.scss');
+  const styles = require('./scss/GuestHomepage.scss');
 
   return (
+
     <div>
 
         <header className={styles.masthead}>
@@ -31,13 +32,11 @@ const GuestHomepage = () => {
 
         </header>
 
-
-
         <div className="container">
 
           <div className="row my-4">
 
-            <div className="col-lg-4 mb-4">
+            <div className="col-lg-4">
               <div className="card h-100">
                 <h4 className="card-header">Card Title 1</h4>
                 <div className="card-body">
@@ -49,7 +48,7 @@ const GuestHomepage = () => {
               </div>
             </div>
 
-            <div className="col-lg-4 mb-4">
+            <div className="col-lg-4">
               <div className="card h-100">
                 <h4 className="card-header">Card Title 2</h4>
                 <div className="card-body">
@@ -61,7 +60,7 @@ const GuestHomepage = () => {
               </div>
             </div>
 
-            <div className="col-lg-4 mb-4">
+            <div className="col-lg-4">
               <div className="card h-100">
                 <h4 className="card-header">Card Title 3</h4>
                 <div className="card-body">

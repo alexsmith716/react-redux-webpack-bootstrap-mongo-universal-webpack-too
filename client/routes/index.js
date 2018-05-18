@@ -5,7 +5,7 @@ import { App, Home, NotFound } from '../containers';
 
 import Login from '../containers/Login/Login';
 import Register from '../containers/Register/Register';
-import LoginSuccess from 'containers/LoginSuccess/Loadable';
+// import LoginSuccess from 'containers/LoginSuccess/Loadable';
 import About from '../containers/About/About';
 
 const locationHelper = locationHelperBuilder({});
@@ -31,7 +31,7 @@ const routes = [{
     { path: '/', exact: true, component: Home },
     { path: '/about', component: About },
     { path: '/login', component: isNotAuthenticated(Login) },
-    { path: '/login-success', component: isAuthenticated(LoginSuccess) },
+    // { path: '/login-success', component: isAuthenticated(LoginSuccess) },
     { path: '/register', component: isNotAuthenticated(Register) },
     { component: NotFound },
   ],

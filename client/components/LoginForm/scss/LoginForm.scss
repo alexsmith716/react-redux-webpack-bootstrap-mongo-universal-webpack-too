@@ -1,0 +1,36 @@
+
+.loginFormScss {
+
+  width: 100%;
+  max-width: calculate-rem(330px);
+  padding: calculate-rem(15px);
+  margin: 0 auto;
+
+  :global(.form-check-label) {
+    font-weight: 400;
+  }
+
+  :global(.form-control) {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: calculate-rem(10px);
+    @include font-size(16px);
+    &:focus {
+      z-index: 2;
+    }
+  }
+
+  input[type="email"] {
+    margin-bottom: calculate-rem(-1px);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input[type="password"] {
+    margin-bottom: calculate-rem(10px);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+};

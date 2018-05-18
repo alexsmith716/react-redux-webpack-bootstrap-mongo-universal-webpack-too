@@ -22,16 +22,16 @@ $fa-font-path: "~font-awesome/fonts";
 // CHOICE 1:
 // GO WITH ALL THE DEFAULT STYLE VARIABLES (as pred-modified by 'preBootstrapCustomizations.scss' above):
 // UNCOMMENT LINE BELOW AND COMMENT OUT THE 5 CHOICE 2 IMPORTS
-// @import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/bootstrap.scss";
 
 // -------------------------------------------------------------------------------
 
 // CHOICE 2:
 // MODIFY THE DEFAULT STYLE VARIABLES (as pre-modified by 'preBootstrapCustomizations.scss' above):
 
-@import "~bootstrap/scss/_functions.scss";
-@import "~bootstrap/scss/_variables.scss";
-@import "~bootstrap/scss/_mixins.scss";
+// @import "~bootstrap/scss/_functions.scss";
+// @import "~bootstrap/scss/_variables.scss";
+// @import "~bootstrap/scss/_mixins.scss";
 
 @import "../bootstrap/customizations/bootstrapCustomizations.scss";
 @import "../bootstrap/customizations/customizedComponentStyles.scss";
