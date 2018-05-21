@@ -1,36 +1,39 @@
 
 .loginFormScss {
-
   width: 100%;
-  max-width: calculate-rem(330px);
-  padding: calculate-rem(15px);
-  margin: 0 auto;
+  @include display-flex-wrap;
+  background: #ffffff;
+  // background: #DC143C; // crimson
 
-  :global(.form-check-label) {
-    font-weight: 400;
+  .formTitle {
+    @include font-size(30px);
+    color: #000999;
+    text-align: center;
+    width: 100%;
   }
 
-  :global(.form-control) {
-    position: relative;
-    box-sizing: border-box;
-    height: auto;
-    padding: calculate-rem(10px);
-    @include font-size(16px);
-    &:focus {
-      z-index: 2;
-    }
+  .wrapInput {
+    width: 100%;
   }
 
-  input[type="email"] {
-    margin-bottom: calculate-rem(-1px);
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+  .containerBtn {
+    width: 100%;
   }
 
-  input[type="password"] {
-    margin-bottom: calculate-rem(10px);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+  .orLoginWith {
+    width: 100%;
+    text-align: center;
+    color: #999999;
+    line-height: 1.4;
   }
+}
 
-};
+// z-index scales  https://getbootstrap.com/docs/4.0/extend/approach/
+// 
+// There are two z-index scales in Bootstrap—elements within a component and overlay components.
+
+// Component elements:
+// * Some components in Bootstrap are built with overlapping elements to prevent double borders without modifying the border property. For example, button groups, input groups, and pagination.
+// * These components share a standard z-index scale of 0 through 3.
+// * 0 is default (initial), 1 is :hover, 2 is :active/.active, and , 3 is :focus.
+// * This approach matches our expectations of highest user priority. If an element is focused, it’s in view and at the user’s attention. Active elements are second highest because they indicate state. Hover is third highest because it indicates user intent, but nearly anything can be hovered.

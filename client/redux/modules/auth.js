@@ -22,6 +22,8 @@ const REGISTER = 'redux-example/auth/REGISTER';
 const REGISTER_SUCCESS = 'redux-example/auth/REGISTER_SUCCESS';
 const REGISTER_FAIL = 'redux-example/auth/REGISTER_FAIL';
 const LOGOUT = 'redux-example/auth/LOGOUT';
+const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
+const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
 
 const initialState = {
   loaded: false
@@ -88,6 +90,19 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         accessToken: null,
         user: null
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        loggingOut: false,
+        accessToken: null,
+        user: null
+      };
+    case LOGOUT_FAIL:
+      return {
+        ...state,
+        loggingOut: false,
+        logoutError: action.error
       };
     default:
       return state;
