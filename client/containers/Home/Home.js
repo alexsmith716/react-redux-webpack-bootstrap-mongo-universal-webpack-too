@@ -37,7 +37,7 @@ export default class Home extends Component {
   }
 
   render() {
-    console.log('>>>>>>>>>>>>> HOME.JS > render() <<<<<<<<<<<<<<');
+
     return (
       this.props.user ? <LoggedInHomepage /> : <GuestHomepage />
     );

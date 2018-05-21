@@ -72,6 +72,10 @@ export default class App extends Component {
   // <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNzc3Nzc3IiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik0zIDE4aDE4di0ySDN2MnptMC01aDE4di0ySDN2MnptMC03djJoMThWNkgzeiIvPgo8L3N2Zz4=" alt="Nav Menu">
   // <img src={iconBar36} alt="Nav Menu"/>
 
+  // <li className="nav-item">
+  //   <a className="nav-link" href="#"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={stylesScss2.colorGoldLocal}>Headphones!</span></a>
+  // </li>
+
 
   handleLogout = event => {
     event.preventDefault();
@@ -91,10 +95,12 @@ export default class App extends Component {
     // <span className={`fa fa-bars ${stylesScss1.faBars}`}></span>
 
     return (
-      <div>
+
+      <div className={stylesScss1.app}>
+
         <Helmet {...config.app.head} />
 
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="main-nav">
           <a className={`navbar-brand ${stylesScss1.brand}`} href="/">Election App</a>
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -106,10 +112,11 @@ export default class App extends Component {
               </li>
               <li className="nav-item">
                 <a className="nav-link bootstrapDefaultFont" data-toggle="modal" data-target="#exampleModal">
-                  <i className="fa fa-fw fa-sign-in"></i>Modal</a>
+                  <span className="fa fa-fw fa-sign-in"></span>Modal</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={stylesScss2.colorGoldLocal}>Headphones!</span></a>
+                <a className="nav-link norwesterFont" href="#">
+                  <span className={`fa fa-fw fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={stylesScss2.colorGoldLocal}>Headphones!</span></a>
               </li>
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle lobsterv20latinregularFont" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -141,7 +148,7 @@ export default class App extends Component {
 
         <footer className={`py-5 ${stylesScss1.footer}`}>
           <div className="container">
-            <p className={`m-0 text-center ${stylesCss1.colorCrimsonCssLocal} philosopherboldwebfontFont`}>Copyright &copy; 2018 · Election App 2018!</p>
+            <p className={`m-0 text-center philosopherboldwebfontFont ${stylesCss1.colorCrimsonCssLocal}`}>Copyright &copy; 2018 · Election App 2018!</p>
             <p className="m-0 text-center"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={`norwesterFont ${stylesScss2.colorGoldLocal}`}>Footer Headphones!</span></p>
           </div>
         </footer>

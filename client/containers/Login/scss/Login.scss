@@ -1,7 +1,76 @@
+
 .login {
+
+  @include bootstrap-default-font;
   padding-top: calculate-rem(65px);
-  padding-bottom: calculate-rem(40px);
-  // background-color: #f5f5f5;
-  text-align: center;
-  // @include display-flex-align-content-center;
-};
+  padding-bottom: calculate-rem(90px);
+
+  .loginContainer {
+    width: 100%;
+
+    .contentContainer {
+      @include display-flex-wrap;
+      justify-content: center;
+      // padding: 20px;
+      position: relative;
+      // background: #000000;
+
+      .wrapContainer {
+        width: 500px;
+
+        .spaceBetween {
+          width: 100%;
+          @include display-flex-wrap;
+          justify-content: space-between;
+          background: #ffffff;
+          // background: #FFFF00; // yellow
+        }
+      }
+    }
+  }
+}
+
+.btnFacebook,
+.btnGoogle {
+  // font-family: Raleway-Bold;
+  font-size: 16px;
+  line-height: 1.2;
+  @include display-flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px solid #e6e6e6;
+  background-color: #ffffff;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.btnFacebook {
+  color: #3b5998;
+}
+
+.btnFacebook i {
+  font-size: 20px;
+  margin-right: 10px;
+  padding-bottom: 1px;
+}
+
+.btnGoogle {
+  color: #555555;
+}
+
+.btnGoogle img {
+  width: 19px;
+  margin-right: 10px;
+  padding-bottom: 1px;
+}
+
+.btnFacebook:hover,
+.btnGoogle:hover {
+  border-color: #eeeeee;
+}
