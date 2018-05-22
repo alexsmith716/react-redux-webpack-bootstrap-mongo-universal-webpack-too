@@ -12,8 +12,8 @@
 }
 
 .appContent {
-  margin-top: calculate-rem(56px);
-  // margin-bottom: calculate-rem(10px);
+  padding-top: calculate-rem(56px);
+  min-height: calc(100vh - 145px); // exclude the height of footer
   position: relative;
 }
 
@@ -24,6 +24,9 @@
 
 .footer {
   background: #388E8E;
+  margin-bottom: 0;
+  padding: 10px 0;
+  height: 145px;
 }
 
 // sgi teal:            388E8E

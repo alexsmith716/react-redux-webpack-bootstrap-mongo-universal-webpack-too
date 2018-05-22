@@ -3,11 +3,11 @@
   width: 100%;
   @include display-flex-wrap;
   // background: #ffffff;
-  background: #999000; // tan
+  // background: #999000; // tan
 
   .formTitle {
-    @include font-size(30px);
-    color: #000999;
+    @include font-size(26px);
+    color: #00008B;
     text-align: center;
     width: 100%;
   }
@@ -17,20 +17,19 @@
     width: 100%;
     z-index: 1;
 
-    label {
-      @include tester-font4; // 'American Typewriter'
-    }
+    // label {
+    //   @include tester-font4; // 'American Typewriter'
+    // }
 
-    .input {
-      font-size: 18px;
-      line-height: 1.2;
-      color: #009900;
-      display: block;
+    input {
+      @include font-size(16px);
+      line-height: 1.8;
+      // color: #eeeeee;
       width: 100%;
-      background: #e6e6e6;
-      // height: 32px;
-      // border-radius: 1px;
-      // padding: 0 10px 0 25px;
+      background: #FAFAFA;
+      // height: calculate-rem(32px);
+      // border-radius: calculate-rem(1px);
+      // padding: 0 calculate-rem(10px) 0 calculate-rem(25px);
     }
   }
 
@@ -46,8 +45,8 @@
   .orLoginWith {
     width: 100%;
     text-align: center;
-    color: #999999;
-    line-height: 1.4;
+    color: #696969;
+    line-height: 2.1;
   }
 }
 
