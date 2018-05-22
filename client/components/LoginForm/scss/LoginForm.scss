@@ -6,7 +6,7 @@
   // background: #999000; // tan
 
   .formTitle {
-    @include font-size(26px);
+    @include font-size(24px);
     color: #00008B;
     text-align: center;
     width: 100%;
@@ -23,7 +23,7 @@
 
     input {
       @include font-size(16px);
-      line-height: 1.8;
+      line-height: 1.5;
       // color: #eeeeee;
       width: 100%;
       background: #FAFAFA;
@@ -40,13 +40,6 @@
     button {
       width: 50%;
     }
-  }
-
-  .orLoginWith {
-    width: 100%;
-    text-align: center;
-    color: #696969;
-    line-height: 2.1;
   }
 }
 
