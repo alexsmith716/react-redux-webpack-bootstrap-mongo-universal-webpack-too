@@ -146,12 +146,12 @@ export default class App extends Component {
           {renderRoutes(route.routes)}
         </div>
 
-        <footer className={`py-5 ${stylesScss1.footer}`}>
+        <div className={`py-5 ${stylesScss1.footer}`}>
           <div className="container">
-            <p className={`m-0 text-center philosopherboldwebfontFont ${stylesCss1.colorCrimsonCssLocal}`}>Copyright &copy; 2018 · Election App 2018!</p>
-            <p className="m-0 text-center"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={`norwesterFont ${stylesScss2.colorGoldLocal}`}>Footer Headphones!</span></p>
+            <div className={`m-0 text-center philosopherboldwebfontFont ${stylesCss1.colorCrimsonCssLocal}`}>Copyright &copy; 2018 · Election App 2018!</div>
+            <div className="m-0 text-center"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={`norwesterFont ${stylesScss2.colorGoldLocal}`}>Footer Headphones!</span></div>
           </div>
-        </footer>
+        </div>
 
         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog" role="document">

@@ -1,11 +1,16 @@
 
 // global styling --------------------------------------
 
+// * {
+//   margin: 0px; 
+//   padding: 0px; 
+//   box-sizing: border-box;
+// }
+
 html,
 body {
   width: 100%;
   height: 100%;
-  // background: #FDF5E6;
 }
 
 body {
@@ -34,40 +39,6 @@ hr.light {
   // margin-bottom: calculate-rem(10px);
   position: relative;
 }
-
-.login-form-scss {
-  width: 100%;
-
-  .formTitle {
-    display: block;
-    @include tester-font;
-    @include font-size(30px);
-    color: #555555;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .wrap {
-    width: 100%;
-    position: relative;
-    background-color: #ffffff;
-    border: 1px solid #e6e6e6;
-
-    .wrapBorder {
-      border-top: none;
-    }
-
-    .wrapInput {
-      display: block;
-      background: transparent;
-      @include tester-font4;
-      @include font-size(15px);
-      color: #666666;
-      line-height: 1.2;
-    }
-  }
-}
-
 
 // --------------------------------------------------------------------------------
 // GLOBAL FONTS

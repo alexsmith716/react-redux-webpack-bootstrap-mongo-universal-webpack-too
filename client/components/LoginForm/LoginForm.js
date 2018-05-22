@@ -3,47 +3,6 @@ import { Form, Field } from 'react-final-form';
 import PropTypes from 'prop-types';
 import loginValidation from './loginValidation';
 
-// react-final-form:
-//  * works on subscriptions to perform updates based on the Observer pattern
-//  * both form and field subscribers must specify exactly which parts of the form state they want to receive updates about
-
-// <Form
-// 
-//   onSubmit={values => onSubmit(values).then(() => {}, err => err)}
-//   validate={loginValidation}
-
-//   render={({ handleSubmit, submitError }) => (
-
-//     <form className={styles.loginFormScss} onSubmit={handleSubmit}>
-
-//       <span className={`p-b-33 ${styles.formTitle}`}>
-//         Account Login 19
-//       </span>
-
-//       <div className={styles.wrap}>
-//         <Field className={styles.wrapInput} name="email" type="text" component={Input} label="Email" />
-//       </div>
-
-//       <div className={styles.wrap}>
-//         <Field className={styles.wrapInput} name="password" type="password" component={Input} label="Password" />
-//       </div>
-
-//       {submitError && (
-//         <p className="text-danger">
-//           <strong>{submitError}</strong>
-//         </p>
-//       )}
-
-//       <button className="btn btn-success" type="submit">
-//         <i className="fa fa-sign-in" /> Log In
-//       </button>
-
-//     </form>
-
-//   )}
-
-// />
-
 const styles = require('./scss/LoginForm.scss');
 
 const Input = ({
@@ -52,7 +11,7 @@ const Input = ({
 
   <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''} ${styles.wrapInput}`}>
 
-    <label htmlFor={input.name} className="col-sm-2">{label}</label>
+    <label htmlFor={input.name}>{label}</label>
 
     <div className={input}>
 
@@ -97,7 +56,7 @@ const LoginForm = ({ onSubmit }) => (
           </span>
         </div>
 
-        <div className={`mb-1 ${styles.wrapInput}`}>
+        <div className={styles.wrapInput}>
           <Field name="email" type="text" component={Input} label="Email" />
         </div>
 
@@ -111,8 +70,8 @@ const LoginForm = ({ onSubmit }) => (
           </p>
         )}
 
-        <div className={`mb-3 ${styles.containerBtn}`}>
-          <button className="btn btn-lg btn-primary" type="submit">
+        <div className={`mb-4 ${styles.containerBtn}`}>
+          <button className="btn btn-md btn-primary" type="submit">
             Sign in
           </button>
         </div>
