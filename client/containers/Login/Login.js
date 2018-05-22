@@ -78,41 +78,37 @@ export default class Login extends Component {
 
     return (
 
-      <div>
+      <div className="container"> 
 
-        <div className="container"> 
+        <div className={styles.login}>
 
-          <div className={styles.login}>
+          <Helmet title="Login" />
 
-            <Helmet title="Login" />
+          {!user && (
 
-            {!user && (
+            <div className={styles.loginContainer}>
 
-              <div className={styles.loginContainer}>
+              <div className={styles.contentContainer}>
 
-                <div className={styles.contentContainer}>
+                <div className={styles.wrapContainer}>
 
-                  <div className={styles.wrapContainer}>
+                  <LoginForm onSubmit={this.login} />
 
-                    <LoginForm onSubmit={this.login} />
+                  <div className={styles.spaceBetween}>
 
-                    <div className={styles.spaceBetween}>
+                    <FacebookLogin
+                      appId="35353454535454354"
+                      /* autoLoad={true} */
+                      fields="name,email,picture"
+                      onLogin={this.onFacebookLogin}
+                      component={this.FacebookLoginButton}
+                    />
 
-                      <FacebookLogin
-                        appId="35353454535454354"
-                        /* autoLoad={true} */
-                        fields="name,email,picture"
-                        onLogin={this.onFacebookLogin}
-                        component={this.FacebookLoginButton}
-                      />
-
-                      <div>
-                        <a href="#" className={`m-b-10 ${styles.btnGoogle}`}>
-                          <img src={googleIcon} alt="Google Login" />
-                          Google
-                        </a>
-                      </div>
-
+                    <div>
+                      <a href="#" className={`m-b-10 ${styles.btnGoogle}`}>
+                        <img src={googleIcon} alt="Google Login" />
+                        Google
+                      </a>
                     </div>
 
                   </div>
@@ -121,24 +117,24 @@ export default class Login extends Component {
 
               </div>
 
-            )}
+            </div>
 
-            {user && (
+          )}
+
+          {user && (
+
+            <div>
+
+              <p>You are currently logged in as Elmer Fudddd. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
 
               <div>
-
-                <p>You are currently logged in as Elmer Fudddd. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-
-                <div>
-                  <button className="btn btn-danger" onClick={logout}>
-                    <i className="fa fa-sign-out" /> Log Out
-                  </button>
-                </div>
+                <button className="btn btn-danger" onClick={logout}>
+                  <i className="fa fa-sign-out" /> Log Out
+                </button>
               </div>
+            </div>
 
-            )}
-
-          </div>
+          )}
 
         </div>
 

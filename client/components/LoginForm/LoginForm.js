@@ -44,14 +44,17 @@ import loginValidation from './loginValidation';
 
 // />
 
+const styles = require('./scss/LoginForm.scss');
+
 const Input = ({
   input, label, type, meta: { touched, error, submitError }, ...rest
 }) => (
-  <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''}`}>
+
+  <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''} ${styles.wrapInput}`}>
 
     <label htmlFor={input.name} className="col-sm-2">{label}</label>
 
-    <div className="col-sm-10">
+    <div className={input}>
 
       <input {...input} {...rest} type={type} className="form-control" />
 
@@ -67,8 +70,8 @@ const Input = ({
     </div>
 
   </div>
-);
 
+);
 
 Input.propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -76,8 +79,6 @@ Input.propTypes = {
   type: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired
 };
-
-const styles = require('./scss/LoginForm.scss');
 
 const LoginForm = ({ onSubmit }) => (
 
@@ -90,17 +91,17 @@ const LoginForm = ({ onSubmit }) => (
 
       <form className={styles.loginFormScss} onSubmit={handleSubmit}>
 
-        <div className={`mb-4 ${styles.formTitle}`}>
+        <div className={`mb-3 ${styles.formTitle}`}>
           <span>
             Please sign in
           </span>
         </div>
 
-        <div className={`mb-3 ${styles.wrapInput}`}>
+        <div className={`mb-1 ${styles.wrapInput}`}>
           <Field name="email" type="text" component={Input} label="Email" />
         </div>
 
-        <div className={`mb-4 ${styles.wrapInput}`}>
+        <div className={`mb-3 ${styles.wrapInput}`}>
           <Field name="password" type="password" component={Input} label="Password" />
         </div>
 
@@ -110,13 +111,13 @@ const LoginForm = ({ onSubmit }) => (
           </p>
         )}
 
-        <div className={`mb-4 ${styles.containerBtn}`}>
-          <button className="btn btn-lg btn-primary btn-block bootstrapDefaultFont" type="submit">
+        <div className={`mb-3 ${styles.containerBtn}`}>
+          <button className="btn btn-lg btn-primary" type="submit">
             Sign in
           </button>
         </div>
 
-        <div className={`mb-4 ${styles.orLoginWith}`}>
+        <div className={`mb-3 ${styles.orLoginWith}`}>
           Or login with
         </div>
 

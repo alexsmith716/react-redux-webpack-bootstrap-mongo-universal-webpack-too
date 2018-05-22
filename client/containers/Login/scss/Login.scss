@@ -6,24 +6,32 @@
   padding-bottom: calculate-rem(90px);
 
   .loginContainer {
+
     width: 100%;
+    margin: 0 auto;
 
     .contentContainer {
+
+      width: 100%;
       @include display-flex-wrap;
       justify-content: center;
-      // padding: 20px;
+      padding: 10px;
       position: relative;
-      // background: #000000;
+      background: #CAE1FF; // really light blue
+      z-index: 1;
 
       .wrapContainer {
+
         width: 500px;
+        background: #9B30FF; // purple
 
         .spaceBetween {
+
           width: 100%;
           @include display-flex-wrap;
           justify-content: space-between;
-          background: #ffffff;
-          // background: #FFFF00; // yellow
+          // background: #ffffff;
+          background: #FFFF00; // yellow
         }
       }
     }
@@ -32,7 +40,6 @@
 
 .btnFacebook,
 .btnGoogle {
-  // font-family: Raleway-Bold;
   font-size: 16px;
   line-height: 1.2;
   @include display-flex;
