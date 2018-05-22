@@ -2,8 +2,8 @@
 .loginFormScss {
   width: 100%;
   @include display-flex-wrap;
-  background: #ffffff;
-  // background: #DC143C; // crimson
+  // background: #ffffff;
+  background: #999000; // tan
 
   .formTitle {
     @include font-size(30px);
@@ -13,11 +13,34 @@
   }
 
   .wrapInput {
+    position: relative;
     width: 100%;
+    z-index: 1;
+
+    label {
+      @include tester-font4; // 'American Typewriter'
+    }
+
+    .input {
+      font-size: 18px;
+      line-height: 1.2;
+      color: #009900;
+      display: block;
+      width: 100%;
+      background: #e6e6e6;
+      // height: 32px;
+      // border-radius: 1px;
+      // padding: 0 10px 0 25px;
+    }
   }
 
   .containerBtn {
     width: 100%;
+    @include display-flex-wrap;
+    justify-content: center;
+    button {
+      width: 50%;
+    }
   }
 
   .orLoginWith {
