@@ -3,7 +3,7 @@
 
   @include bootstrap-default-font;
   padding-top: calculate-rem(65px);
-  padding-bottom: calculate-rem(90px);
+  padding-bottom: calculate-rem(40px);
 
   .loginContainer {
 
@@ -22,16 +22,31 @@
 
       .wrapContainer {
 
-        width: calculate-rem(500px);
+        width: calculate-rem(450px);
         // background: #9B30FF;
 
-        .spaceBetween {
+        .signInWith {
+          width: 100%;
+          text-align: center;
+          color: #696969;
+          line-height: 2.1;
+        }
 
+        .createAccount {
           width: 100%;
           @include display-flex-wrap;
-          justify-content: space-between;
-          // background: #ffffff;
-          // background: #FFFF00;
+          justify-content: center;
+
+          a {
+            padding-left: calculate-rem(8px);
+          }
+        }
+
+        .createAccountX {
+          padding:15px 20px;
+          text-align:center;
+          border:1px solid #d8dee2;
+          border-radius:5px
         }
       }
     }
@@ -84,6 +99,7 @@
 
 // CAE1FF    lightsteelblue 1
 // 9B30FF    purple 1
+// 696969    dimgray (gray 42)
 // ffffff    white
 // FFFF00    yellow 1
 // B8B8B8    gray 72

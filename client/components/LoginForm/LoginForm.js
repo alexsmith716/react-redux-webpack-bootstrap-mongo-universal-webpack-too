@@ -11,7 +11,24 @@ const Input = ({
 
   <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''} ${styles.wrapInput}`}>
 
-    <label htmlFor={input.name}>{label}</label>
+    {label == 'Email' && (
+
+      <label htmlFor={input.name}>{label}</label>
+    )}
+
+    {label == 'Password' && (
+
+      <div className="space-between">
+
+        <label htmlFor={input.name}>
+          {label}
+        </label>
+
+        <div>
+          <a href="/password_reset">Forgot password?</a>
+        </div>
+      </div>
+    )}
 
     <div className={input}>
 
@@ -25,9 +42,7 @@ const Input = ({
           <strong>{error || submitError}</strong>
         </div>
       )}
-
     </div>
-
   </div>
 
 );
@@ -52,7 +67,7 @@ const LoginForm = ({ onSubmit }) => (
 
         <div className={`mb-3 ${styles.formTitle}`}>
           <span>
-            Please sign in
+            Sign in to Election App
           </span>
         </div>
 
@@ -60,7 +75,7 @@ const LoginForm = ({ onSubmit }) => (
           <Field name="email" type="text" component={Input} label="Email" />
         </div>
 
-        <div className={`mb-3 ${styles.wrapInput}`}>
+        <div className={`mb-2 ${styles.wrapInput}`}>
           <Field name="password" type="password" component={Input} label="Password" />
         </div>
 
@@ -71,17 +86,11 @@ const LoginForm = ({ onSubmit }) => (
         )}
 
         <div className={`mb-4 ${styles.containerBtn}`}>
-          <button className="btn btn-md btn-primary" type="submit">
+          <button className="btn btn-md btn-success" type="submit">
             Sign in
           </button>
         </div>
-
-        <div className={`mb-3 ${styles.orLoginWith}`}>
-          Or login with
-        </div>
-
       </form>
-
     )}
   />
 );

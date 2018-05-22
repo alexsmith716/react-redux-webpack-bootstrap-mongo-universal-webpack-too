@@ -94,7 +94,11 @@ export default class Login extends Component {
 
                   <LoginForm onSubmit={this.login} />
 
-                  <div className={styles.spaceBetween}>
+                  <div className={`mb-3 ${styles.signInWith}`}>
+                    Or sign in with
+                  </div>
+
+                  <div className="space-between">
 
                     <FacebookLogin
                       appId="35353454535454354"
@@ -112,6 +116,11 @@ export default class Login extends Component {
                     </div>
 
                   </div>
+
+                  <div className={`mt-5 ${styles.createAccount}`}>
+                    Not a member?
+                    <a href="/join?source=login">Create an account</a>.
+                  </div> 
 
                 </div>
 
