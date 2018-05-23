@@ -43,10 +43,10 @@ hr.light {
 .button-facebook,
 .button-google {
   line-height: 1.2;
-  width: 130px;
-  height: 40px;
-  border-radius: 3px;
-  border: 1px solid #B8B8B8;
+  width: calculate-rem(130px);
+  height: calculate-rem(40px);
+  border-radius: calculate-rem(3px);
+  border: calculate-rem(1px) solid #B8B8B8;
   background-color: #ffffff;
 
   -webkit-transition: all 0.4s;
@@ -60,9 +60,9 @@ hr.light {
 }
 
 .button-facebook i {
-  font-size: 20px;
-  margin-right: 10px;
-  padding-bottom: 1px;
+  @include font-size(20px);
+  margin-right: calculate-rem(10px);
+  padding-bottom: calculate-rem(1px);
 }
 
 .button-google {
@@ -70,9 +70,9 @@ hr.light {
 }
 
 .button-google img {
-  width: 19px;
-  margin-right: 10px;
-  padding-bottom: 1px;
+  width: calculate-rem(19px);
+  margin-right: calculate-rem(10px);
+  padding-bottom: calculate-rem(1px);
 }
 
 .button-facebook:hover,
