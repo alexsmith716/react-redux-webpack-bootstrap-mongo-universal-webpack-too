@@ -65,8 +65,8 @@ export default class Login extends Component {
   };
 
   FacebookLoginButton = ({ facebookLogin }) => (
-    <div className="m-b-10 d-flex justify-content-center align-items-center button-facebook">
-      <a href="#" onClick={facebookLogin}>
+    <div>
+      <a href="#" className="m-b-10 d-flex justify-content-center align-items-center button-facebook" onClick={facebookLogin}>
         <i className="fa fa-facebook-official"></i>
         Facebook
       </a>
@@ -116,8 +116,8 @@ export default class Login extends Component {
                       component={this.FacebookLoginButton}
                     />
 
-                    <div className="m-b-10 d-flex justify-content-center align-items-center button-google">
-                      <a href="#">
+                    <div>
+                      <a href="#" className="m-b-10 d-flex justify-content-center align-items-center button-google">
                         <img src={googleIcon} alt="Google Login" />
                         Google
                       </a>

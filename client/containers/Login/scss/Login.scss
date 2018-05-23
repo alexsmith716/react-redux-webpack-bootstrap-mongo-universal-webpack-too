@@ -5,19 +5,19 @@
   // padding-bottom: calculate-rem(40px);
 
   .login {
-    width: 450px;
+    width: calculate-rem(450px);
   
     .formTitle {
-      font-size: 24px;
+      @include font-size(24px);
       color: #00008B;
       text-align: center;
       width: 100%;
     }
   
     .formContainer {
-      padding: 15px 15px;
-      border: 1px solid #d8dee2;
-      border-radius: 3px;
+      padding: calculate-rem(15px) calculate-rem(15px);
+      border: calculate-rem(1px) solid #d8dee2;
+      border-radius: calculate-rem(3px);
 
       .signInWith {
         text-align: center;
@@ -28,9 +28,9 @@
     }
 
     .createAccount {
-      padding: 15px 15px;
-      border: 1px solid #d8dee2;
-      border-radius: 3px;
+      padding: calculate-rem(15px) calculate-rem(15px);
+      border: calculate-rem(1px) solid #d8dee2;
+      border-radius: calculate-rem(3px);
       a {
         padding-left: calculate-rem(8px);
       }
