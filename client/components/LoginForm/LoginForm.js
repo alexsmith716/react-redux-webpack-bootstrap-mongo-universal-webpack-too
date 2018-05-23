@@ -18,7 +18,7 @@ const Input = ({
 
     {label == 'Password' && (
 
-      <div className="space-between">
+      <div className="d-flex justify-content-between">
 
         <label htmlFor={input.name}>
           {label}
@@ -27,6 +27,7 @@ const Input = ({
         <div>
           <a href="/password_reset">Forgot password?</a>
         </div>
+
       </div>
     )}
 
@@ -57,25 +58,19 @@ Input.propTypes = {
 const LoginForm = ({ onSubmit }) => (
 
   <Form
-  
+
     onSubmit={values => onSubmit(values).then(() => {}, err => err)}
     validate={loginValidation}
 
     render={({ handleSubmit, submitError }) => (
 
-      <form className={styles.loginFormScss} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
 
-        <div className={`mb-3 ${styles.formTitle}`}>
-          <span>
-            Sign in to Election App
-          </span>
-        </div>
-
-        <div className={styles.wrapInput}>
+        <div className="form-group">
           <Field name="email" type="text" component={Input} label="Email" />
         </div>
 
-        <div className={`mb-2 ${styles.wrapInput}`}>
+        <div className="form-group">
           <Field name="password" type="password" component={Input} label="Password" />
         </div>
 
@@ -85,11 +80,10 @@ const LoginForm = ({ onSubmit }) => (
           </p>
         )}
 
-        <div className={`mb-4 ${styles.containerBtn}`}>
-          <button className="btn btn-md btn-success" type="submit">
-            Sign in
-          </button>
+        <div className="d-flex justify-content-center">
+          <a className={`btn btn-success ${styles.signInBtn}`} href="index.html">Sign in</a>
         </div>
+
       </form>
     )}
   />

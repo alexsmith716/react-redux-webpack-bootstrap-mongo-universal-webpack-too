@@ -65,10 +65,12 @@ export default class Login extends Component {
   };
 
   FacebookLoginButton = ({ facebookLogin }) => (
-    <a href="#" className={`m-b-10 ${styles.btnFacebook}`} onClick={facebookLogin}>
-      <i className="fa fa-facebook-official"></i>
-      Facebook
-    </a>
+    <div className="m-b-10 d-flex justify-content-center align-items-center button-facebook">
+      <a href="#" onClick={facebookLogin}>
+        <i className="fa fa-facebook-official"></i>
+        Facebook
+      </a>
+    </div>
   );
 
 
@@ -78,27 +80,33 @@ export default class Login extends Component {
 
     return (
 
-      <div className="container"> 
+      <div className="container">
 
-        <div className={styles.login}>
+        <div className={styles.loginContainer}>
 
-          <Helmet title="Login" />
+          <Helmet title="Login" />  
 
           {!user && (
 
-            <div className={styles.loginContainer}>
+            <div className="d-flex justify-content-center">
 
-              <div className={styles.contentContainer}>
+              <div className={styles.login}>
 
-                <div className={styles.wrapContainer}>
+                <div className={`mb-3 ${styles.formTitle}`}>
+                  <p>
+                    Sign in to Election App
+                  </p>
+                </div>
+
+                <div className={styles.formContainer}>
 
                   <LoginForm onSubmit={this.login} />
 
-                  <div className={`mb-3 ${styles.signInWith}`}>
-                    Or sign in with
+                  <div className={`mt-3 mb-3 ${styles.signInWith}`}>
+                    <p>Or sign in with</p>
                   </div>
 
-                  <div className="space-between">
+                  <div className="d-flex justify-content-between">
 
                     <FacebookLogin
                       appId="35353454535454354"
@@ -108,21 +116,23 @@ export default class Login extends Component {
                       component={this.FacebookLoginButton}
                     />
 
-                    <div>
-                      <a href="#" className={`m-b-10 ${styles.btnGoogle}`}>
+                    <div className="m-b-10 d-flex justify-content-center align-items-center button-google">
+                      <a href="#">
                         <img src={googleIcon} alt="Google Login" />
                         Google
                       </a>
-                    </div>
+                    </div> 
 
                   </div>
 
-                  <div className={`mt-5 ${styles.createAccount}`}>
+                </div>
+
+                <div className={`mt-4 d-flex justify-content-center ${styles.createAccount}`}>
+                  <div>
                     Not a member?
                     <a href="/join?source=login">Create an account</a>.
-                  </div> 
-
-                </div>
+                  </div>
+                </div> 
 
               </div>
 
@@ -152,3 +162,53 @@ export default class Login extends Component {
     );
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
