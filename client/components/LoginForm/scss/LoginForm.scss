@@ -1,47 +1,8 @@
 
-.loginFormScss {
-  width: 100%;
-  @include display-flex-wrap;
-  // background: #ffffff;
-  // background: #999000; // tan
-
-  .formTitle {
-    @include font-size(24px);
-    color: #00008B;
-    text-align: center;
-    width: 100%;
-  }
-
-  .wrapInput {
-    position: relative;
-    width: 100%;
-    z-index: 1;
-
-    // label {
-    //   @include tester-font4; // 'American Typewriter'
-    // }
-
-    input {
-      @include font-size(16px);
-      line-height: 1.5;
-      // color: #eeeeee;
-      width: 100%;
-      background: #FAFAFA;
-      // height: calculate-rem(32px);
-      // border-radius: calculate-rem(1px);
-      // padding: 0 calculate-rem(10px) 0 calculate-rem(25px);
-    }
-  }
-
-  .containerBtn {
-    width: 100%;
-    @include display-flex-wrap;
-    justify-content: center;
-    button {
-      width: 50%;
-    }
-  }
+.signInBtn {
+  width: 50%;
 }
+
 
 // z-index scales  https://getbootstrap.com/docs/4.0/extend/approach/
 // 

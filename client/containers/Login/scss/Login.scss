@@ -1,101 +1,44 @@
 
-.login {
-
+.loginContainer {
   @include bootstrap-default-font;
   padding-top: calculate-rem(65px);
-  padding-bottom: calculate-rem(40px);
+  // padding-bottom: calculate-rem(40px);
 
-  .loginContainer {
-
-    width: 100%;
-    // margin: 0 auto;
-
-    .contentContainer {
-
+  .login {
+    width: 450px;
+  
+    .formTitle {
+      font-size: 24px;
+      color: #00008B;
+      text-align: center;
       width: 100%;
-      @include display-flex-wrap;
-      justify-content: center;
-      // padding: calculate-rem(10px);
-      position: relative;
-      // background: #CAE1FF;
-      z-index: 1;
+    }
+  
+    .formContainer {
+      padding: 15px 15px;
+      border: 1px solid #d8dee2;
+      border-radius: 3px;
 
-      .wrapContainer {
+      .signInWith {
+        text-align: center;
+        color: #696969;
+        line-height: 2.1;
+      }
 
-        width: calculate-rem(450px);
-        // background: #9B30FF;
+    }
 
-        .signInWith {
-          width: 100%;
-          text-align: center;
-          color: #696969;
-          line-height: 2.1;
-        }
-
-        .createAccount {
-          width: 100%;
-          @include display-flex-wrap;
-          justify-content: center;
-
-          a {
-            padding-left: calculate-rem(8px);
-          }
-        }
-
-        .createAccountX {
-          padding:15px 20px;
-          text-align:center;
-          border:1px solid #d8dee2;
-          border-radius:5px
-        }
+    .createAccount {
+      padding: 15px 15px;
+      border: 1px solid #d8dee2;
+      border-radius: 3px;
+      a {
+        padding-left: calculate-rem(8px);
       }
     }
   }
+
 }
 
-.btnFacebook,
-.btnGoogle {
-  @include font-size(16px);
-  line-height: 1.2;
-  @include display-flex;
-  justify-content: center;
-  align-items: center;
-  width: calculate-rem(130px);
-  height: calculate-rem(40px);
-  border-radius: calculate-rem(3px);
-  border: calculate-rem(1px) solid #B8B8B8;
-  background-color: #ffffff;
-
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-  transition: all 0.4s;
-}
-
-.btnFacebook {
-  color: #3b5998;
-}
-
-.btnFacebook i {
-  @include font-size(20px);
-  margin-right: calculate-rem(10px);
-  padding-bottom: calculate-rem(1px);
-}
-
-.btnGoogle {
-  color: #555555;
-}
-
-.btnGoogle img {
-  width: calculate-rem(19px);
-  margin-right: calculate-rem(10px);
-  padding-bottom: calculate-rem(1px);
-}
-
-.btnFacebook:hover,
-.btnGoogle:hover {
-  border-color: #EEEEE0;
-}
 
 // CAE1FF    lightsteelblue 1
 // 9B30FF    purple 1
