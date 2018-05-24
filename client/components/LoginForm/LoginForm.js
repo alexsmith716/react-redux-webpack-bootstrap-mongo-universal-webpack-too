@@ -9,14 +9,14 @@ const Input = ({
   input, label, type, meta: { touched, error, submitError }, ...rest
 }) => (
 
-  <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''} ${styles.wrapInput}`}>
+  <div className={`form-group ${(error || submitError) && touched ? 'has-error' : ''}`}>
 
-    {label == 'Email' && (
+    {label === 'Email' && (
 
       <label htmlFor={input.name}>{label}</label>
     )}
 
-    {label == 'Password' && (
+    {label === 'Password' && (
 
       <div className="d-flex justify-content-between">
 
