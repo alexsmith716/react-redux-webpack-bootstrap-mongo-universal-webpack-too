@@ -16,6 +16,7 @@ const googleIcon = require('../../components/GoogleLogin/images/icon-google.png'
 // <p>You are currently logged in as {user.email}.</p>
 
 @connect(state => ({ user: state.auth.user }), { ...notifActions, ...authActions })
+
 @withRouter
 
 export default class Login extends Component {
@@ -162,53 +163,3 @@ export default class Login extends Component {
     );
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,6 +9,7 @@ import * as notifActions from '../../redux/modules/notifs';
 @connect(() => ({}), { ...notifActions, ...authActions })
 
 export default class Register extends Component {
+
   static propTypes = {
     location: PropTypes.shape({ state: PropTypes.object }).isRequired,
     register: PropTypes.func.isRequired,
@@ -28,7 +29,7 @@ export default class Register extends Component {
 
   successRegister = () => {
     this.props.notifSend({
-      message: "You'r now registered !",
+      message: "You're now registered !",
       kind: 'success',
       dismissAfter: 2000
     });

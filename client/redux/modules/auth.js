@@ -1,4 +1,5 @@
-import { SubmissionError } from 'redux-form';
+
+import { FORM_ERROR } from 'final-form';
 import jsCookie from 'js-cookie';
 
 //import { LOAD } from '../../constants/actionTypes';
@@ -26,7 +27,8 @@ const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
 
 const initialState = {
-  loaded: false
+  loaded: false,
+  user: null
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -60,6 +62,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
+        loaded: true,
         accessToken: action.result.accessToken,
         user: action.result.user
       };
@@ -88,8 +91,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOGOUT:
       return {
         ...state,
-        accessToken: null,
-        user: null
+        loggingOut: true
       };
     case LOGOUT_SUCCESS:
       return {
@@ -112,9 +114,12 @@ export default function reducer(state = initialState, action = {}) {
 const catchValidation = error => {
   if (error.message) {
     if (error.message === 'Validation failed' && error.data) {
-      throw new SubmissionError(error.data);
+      return Promise.reject(error.data);
     }
-    throw new SubmissionError({ _error: error.message });
+    const err = {
+      [FORM_ERROR]: error.message
+    };
+    return Promise.reject(err);
   }
   return Promise.reject(error);
 };
