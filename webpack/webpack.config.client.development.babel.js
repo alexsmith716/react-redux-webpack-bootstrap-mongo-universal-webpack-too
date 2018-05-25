@@ -1,4 +1,6 @@
+
 const webpack = require('webpack');
+var fs = require('fs');
 const path = require('path');
 const base_configuration = require('./webpack.config');
 const application_configuration = require('../configuration');
@@ -6,6 +8,8 @@ const settings = require('./universal-webpack-settings');
 const { clientConfiguration } = require('universal-webpack');
 
 const rootPath = path.resolve(__dirname, '..');
+
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 
 // With `development: false` all CSS will be extracted into a file
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
@@ -42,6 +46,10 @@ configuration.plugins.push(
 
   // // Webpack Hot Reload
   // new webpack.HotModuleReplacementPlugin(),
+
+  new ReactLoadablePlugin({
+    filename: path.join(configuration.output.publicPath, 'react-loadable.json')
+  }),
 
   new webpack.NamedModulesPlugin(),
 

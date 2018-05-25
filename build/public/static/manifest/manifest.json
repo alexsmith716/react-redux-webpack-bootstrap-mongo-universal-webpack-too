@@ -1,19 +1,19 @@
 {
-  "short_name": "ElectionApp2018!",
+  "short_name": "ElectionApp2018",
   "name": "react-redux-webpack-bootstrap-mongo-universal-webpack",
   "icons": [
     {
-      "src": "launcher-icon-2x.png",
+      "src": "launcher-icon-1.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "launcher-icon-3x.png",
+      "src": "launcher-icon-2.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "launcher-icon-4x.png",
+      "src": "launcher-icon-3.png",
       "sizes": "192x192",
       "type": "image/png"
     }

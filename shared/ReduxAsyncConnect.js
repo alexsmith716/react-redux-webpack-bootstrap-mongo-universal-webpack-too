@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Route } from 'react-router';
 import { trigger } from 'redial';
 // import NProgress from 'nprogress';
-import asyncMatchRoutes from 'utils/asyncMatchRoutes';
+import asyncMatchRoutes from '../server/utils/asyncMatchRoutes';
 
 @withRouter
 export default class ReduxAsyncConnect extends Component {

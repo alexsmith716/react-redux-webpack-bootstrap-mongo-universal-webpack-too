@@ -7,9 +7,10 @@ import { App, Home, NotFound } from '../containers';
 // import Register from '../containers/Register/Register';
 // import About from '../containers/About/About';
 
-import Login from '../containers/Login/Loadable';
 import About from '../containers/About/Loadable';
+import Login from '../containers/Login/Loadable';
 import Register from '../containers/Register/Loadable';
+
 // import LoginSuccess from 'containers/LoginSuccess/Loadable';
 
 const locationHelper = locationHelperBuilder({});
@@ -34,7 +35,7 @@ const routes = [{
   component: App,
   routes: [
     { path: '/', exact: true, component: Home },
-    { path: '/about', component: About },
+    { path: '/ZZZZabout', component: About },
     { path: '/login', component: isNotAuthenticated(Login) },
     // { path: '/login-success', component: isAuthenticated(LoginSuccess) },
     { path: '/register', component: isNotAuthenticated(Register) },

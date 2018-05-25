@@ -60,6 +60,24 @@ module.exports = {
   //   }
   // },
 
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       default: {
+  //         minChunks: 2,
+  //         priority: -20,
+  //         reuseExistingChunk: true
+  //       },
+  //       vendor: {
+  //         chunks: 'initial',
+  //         name: 'vendor',
+  //         priority: -10,
+  //         enforce: true
+  //       }
+  //     }
+  //   }
+  // },
+
   module: {
 
     strictThisContextOnImports: true,

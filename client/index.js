@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
 import localForage from 'localforage';
-import { ReduxAsyncConnect } from 'redux-connect';
 import { AppContainer as HotEnabler } from 'react-hot-loader';
 import { getStoredState } from 'redux-persist';
-import { Provider } from 'react-redux';
+import { ReduxAsyncConnect, Provider } from '../shared';
+
+import Loadable from 'react-loadable';
 
 import createStore from './redux/create';
 import apiClient from '../server/helpers/apiClient';
@@ -55,7 +56,9 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>> CLIENT.JS > __DEVTOOLS__ !!!!!: ', __DEVTO
     );
   };
 
-  hydrate(routes);
+  await Loadable.preloadReady();
+
+  await hydrate(routes);
 
   if (module.hot) {
     console.log('>>>>>>>>>>>>>>>>>>> CLIENT.JS > MODULE.HOT! <<<<<<<<<<<<<<<<<');
