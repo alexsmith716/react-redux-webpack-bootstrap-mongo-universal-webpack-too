@@ -20,24 +20,27 @@ import delay from 'express-delay';
 import apiRouter from '../api/apiRouter';
 import mongoose from 'mongoose';
 
+// #########################################################################
+
 import { ConnectedRouter } from 'react-router-redux';
 import { renderRoutes } from 'react-router-config';
 import Loadable from 'react-loadable';
 import { getBundles } from 'react-loadable/webpack';
+
+// ensure all data for routes is prefetched on the server before attempting to render
 import { trigger } from 'redial';
 
 // #########################################################################
 
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { Provider } from 'react-redux';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter, matchPath } from 'react-router';
-import { ReduxAsyncConnect, loadOnServer } from 'redux-connect';
+import { loadOnServer } from 'redux-connect';
 import { getChunks, waitChunks } from './utils/chunks';
 import asyncMatchRoutes from './utils/asyncMatchRoutes';
-import { ReduxAsyncConnect } from './components/ReduxAsyncConnect';
-import { Provider } from './components/Provider';
+
+import { ReduxAsyncConnect, Provider } from '../shared';
 
 import createMemoryHistory from 'history/createMemoryHistory';
 import createStore from '../client/redux/create';
@@ -45,6 +48,10 @@ import createStore from '../client/redux/create';
 import Html from './helpers/Html';
 import routes from '../client/routes';
 import { parse as parseUrl } from 'url';
+
+import stats from '../build/public/assets/react-loadable.json';
+
+const chunksPath = path.join(__dirname, '../public/assets', 'webpack-chunks.json');
 
 // #########################################################################
 
@@ -55,6 +62,7 @@ let dbURL = serverConfig.mongoURL;
 if (process.env.NODE_ENV === 'production') {
   // dbURL = serverConfig.mongoLabURL;
 };
+
 const mongooseOptions = {
   autoReconnect: true,
   keepAlive: true,
@@ -105,54 +113,74 @@ process.on('unhandledRejection', (error, promise) => {
 export default function (parameters) {
 
   const app = new express();
+  const server = http.createServer(app);
+
+  const normalizePort = (val)  => {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+    return false;
+  };
+
+  // const port = normalizePort(process.env.PORT || serverConfig.port);
+  const port = 3000;
+  app.set('port', port);
 
   app.use((req, res, next) => {
-    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.ip +++++++++: ', req.ip);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.method +++++: ', req.method);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++: ', req.url);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++: ', req.headers);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++: ', req.session);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
+    // console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN < $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     return next();
   });
-  
+
   app.use(morgan('dev'));
   app.use(helmet());
   app.use(cors());
   //app.use(headers);
-  
+
   // #########################################################################
-  
+
   if (process.env.NODE_ENV === 'development') {
     //app.use(delay(200, 300));
   }
-  
+
   // #########################################################################
-  
+
   app.use(compression());
   // app.use(express.static(path.join(__dirname, '../build/public')));
   app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
   app.use(favicon(path.join(__dirname, '../public/static/favicon', 'favicon.ico')));
-  app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
+  // app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
+  app.use('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
 
   // #########################################################################
-  
+
   // production +++++++++++++++++++++++++++++++
   //app.use('/dist/service-worker.js', (req, res, next) => {
   //  res.setHeader('Service-Worker-Allowed', '/');
   //  return next();
   //});
-  
+
   // #########################################################################
-  
+
   // saveUninitialized: false, // don't create session until something stored
   // resave: false, // don't save session if unmodified
-  
+
   app.use(bodyParser.json({ limit: '20mb' }));
   app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
   app.use(cookieParser());
-  
+
   // app.use(/\/api/, session({
   app.use(session({
     // secret: process.env.SESSION_SECRET,
@@ -164,54 +192,75 @@ export default function (parameters) {
       touchAfter: 0.5 * 3600
     })
   }));
-  
+
   app.use((req, res, next) => {
     console.log('>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++  111z: ', req.headers);
     console.log('>>>>>>>>>>>>>>>> SERVER > REQ.session ++++  111z: ', req.session);
     console.log('>>>>>>>>>>>>>>>> SERVER > REQ.cookies ++++  111z: ', req.cookies);
     return next();
   });
-  
+
   // #########################################################################
-  
+
   // app.use(/\/api/, apiRouter);
   app.use('../api', apiRouter);
-  
-  // #########################################################################
-  
+
+
   // app.use((req, res) => {
   //   res.status(200).send('SERVER > Response Ended For Testing!!!!!!! Status 200!!!!!!!!!');
   // });
 
-  // React application rendering
+  // #########################################################################
+
+
+  // universal-webpack: generates client-side and server-side configuration for Webpack
+  // universal-webpack: passes the chunks() function parameter (inside the parameters argument of the server-side function) 
+  //  which returns webpack-compiled chunks filename info:
+
+  // {"javascript":{
+  //   "vendors-main-vendor":"/assets/vendors-main-vendor.69c981ab6a9c22d86b97.js",
+  //   "vendors-vendor":"/assets/vendors-vendor.076f85263f36e33106c7.js",
+  //   "vendors-main":"/assets/vendors-main.3426cdd1f69ef9ade846.js",
+  //   "vendor":"/assets/vendor.273702bd281a3648e904.js",
+  //   "main":"/assets/main.273702bd281a3648e904.js"
+  // },
+  // 
+  // "styles":{
+  //    "main":"/assets/main-c0bd9df7701aa27c3569.css"
+  //   }
+  // }
+
+  // These filenames are required for <script src=.../> and <link rel="style" href=.../> tags in case of
+  //  isomorphic (universal) rendering on the server-side.
+
   app.use(async (req, res) => {
 
     const chunks = parameters.chunks();
     // const chunks = {...parameters.chunks()};
 
     console.log('>>>>>>>>>>>>>>>> SERVER > CHUNKS !!!!!!!!!: ', chunks);
-  
-    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! START !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  
+
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! START !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
     const url = req.originalUrl || req.url;
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > url: ', url);
-  
+
     const location = parseUrl(url);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > location: ', location);
-  
+
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! > apiClient !!');
     const client = apiClient(req);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > apiClient !!');
-  
+
     const history = createMemoryHistory({ initialEntries: [req.originalUrl] });
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > createMemoryHistory !!');
-  
+
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! > createStore !!');
     const store = createStore(history, client);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > createStore !!');
-  
-    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! END !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  
+
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! END !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
     const hydrate = () => {
       res.write('<!doctype html>');
       ReactDOM.renderToNodeStream(<Html assets={chunks} store={store} />).pipe(res);
@@ -222,34 +271,40 @@ export default function (parameters) {
     }
 
     try {
-      console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ loadOnServer START $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  
+      console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ loadOnServer START $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
       await loadOnServer({store, location, routes, helpers: { client }});
-  
-      console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ loadOnServer END $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  
+
+      console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ loadOnServer END $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
+      const modules = [];
       const context = {};
-  
+
       const component = (
-        <Provider store={store} key="provider">
-          <StaticRouter location={url} context={context}>
-            <ReduxAsyncConnect routes={routes} helpers={{ client }} />
-          </StaticRouter>
-        </Provider>
+        <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+          <Provider store={store} key="provider">
+            <StaticRouter location={url} context={context}>
+              <ReduxAsyncConnect routes={routes} helpers={{ client }} />
+            </StaticRouter>
+          </Provider>
+        </Loadable.Capture>
       );
-  
+
       const content = ReactDOM.renderToString(component);
-  
+
       if (context.url) {
         return res.redirect(302, context.url);
       }
-  
-      const html = <Html assets={chunks} content={content} store={store} />;
+
+      const bundles = getBundles(stats, modules);
+      const html = <Html assets={chunks} content={content} store={store} bundles={bundles} />;
 
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > html: ', html);
-  
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > assets: ', assets);
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > bundles: ', bundles);
+
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! HTML <<<<<<<<<<<<<<<<<<');
-  
+
       res.status(200).send(`<!doctype html>${ReactDOM.renderToString(html)}`);
 
 
@@ -264,44 +319,21 @@ export default function (parameters) {
   });
 
   // #########################################################################
-  
-  const normalizePort = (val)  => {
-  
-    var port = parseInt(val, 10);
-  
-    if (isNaN(port)) {
-      // named pipe
-      return val;
-    }
-  
-    if (port >= 0) {
-      // port number
-      return port;
-    }
-  
-    return false;
-  };
-  
-  // const port = normalizePort(process.env.PORT || serverConfig.port);
-  const port = 3000;
-  app.set('port', port);
-  
-  // http.createServer([requestListener]): Returns a new instance of http.Server
-  // const server = https.createServer(options, app).listen(app.get('port'), '', () => {
-  const server = http.createServer(app).listen( app.get('port'), serverConfig.host, () => {
+
+  server.listen( app.get('port'), serverConfig.host, () => {
     console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
   });
-  
+
   server.on('error', (err) => {
-  
+
     if (err.syscall !== 'listen') {
       console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
     }
-  
+
     var bind = typeof port === 'string'
       ? 'Pipe ' + port
       : 'Port ' + port;
-  
+
     switch (err.code) {
       case 'EACCES':
         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
@@ -315,7 +347,7 @@ export default function (parameters) {
         console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
     }
   });
-  
+
   server.on('listening', () => {
     var addr = server.address();
     var bind = typeof addr === 'string'
@@ -323,13 +355,66 @@ export default function (parameters) {
       : 'port ' + addr.port;
     console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
   });
-  
-  // https://nodejs.org/api/net.html#net_class_net_socket
-  // https://nodejs.org/api/http.html#http_event_upgrade
+
   server.on('upgrade', (req, socket, head) => {
     console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
     // proxy.ws(req, socket, head);
   });
+
+
+  // (async () => {
+
+  //   try {
+  //     await Loadable.preloadAll();
+  //     await waitChunks(chunksPath);
+  //   } catch (error) {
+  //     console.log('Server preload error:', error);
+  //   }
+
+  //   server.listen( app.get('port'), serverConfig.host, () => {
+  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
+  //   });
+  //   
+  //   server.on('error', (err) => {
+  //   
+  //     if (err.syscall !== 'listen') {
+  //       console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
+  //     }
+  //   
+  //     var bind = typeof port === 'string'
+  //       ? 'Pipe ' + port
+  //       : 'Port ' + port;
+  //   
+  //     switch (err.code) {
+  //       case 'EACCES':
+  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
+  //         process.exit(1);
+  //         break;
+  //       case 'EADDRINUSE':
+  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
+  //         process.exit(1);
+  //         break;
+  //       default:
+  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
+  //     }
+  //   });
+  //   
+  //   server.on('listening', () => {
+  //     var addr = server.address();
+  //     var bind = typeof addr === 'string'
+  //       ? 'pipe ' + addr
+  //       : 'port ' + addr.port;
+  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
+  //   });
+  //   
+  //   // https://nodejs.org/api/net.html#net_class_net_socket
+  //   // https://nodejs.org/api/http.html#http_event_upgrade
+  //   server.on('upgrade', (req, socket, head) => {
+  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
+  //     // proxy.ws(req, socket, head);
+  //   });
+
+  // })()
 
 };
 

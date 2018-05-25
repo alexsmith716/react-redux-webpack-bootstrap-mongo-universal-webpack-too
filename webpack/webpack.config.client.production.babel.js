@@ -7,12 +7,17 @@ const Visualizer = require('webpack-visualizer-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { clientConfiguration } = require('universal-webpack');
 
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+
 const settings = require('./universal-webpack-settings');
 const base_configuration = require('./webpack.config');
 
 // With `development: false` all CSS will be extracted into a file
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
 const configuration = clientConfiguration(base_configuration, settings, { development: false, useMiniCssExtractPlugin: true });
+
+const buildPath = path.resolve(configuration.context, './build/public/assets');
+
 
 const bundleAnalyzerPath = path.resolve(configuration.context, './build/analyzers/bundleAnalyzer');
 const visualizerPath = path.resolve(configuration.context, './build/analyzers/visualizer');
@@ -71,6 +76,10 @@ configuration.plugins.push(
     __SERVER__: true,
     __DEVELOPMENT__: false,
     __DEVTOOLS__: false,
+  }),
+
+  new ReactLoadablePlugin({
+    filename: path.join(buildPath, 'react-loadable.json')
   }),
 
   // https://blog.etleap.com/2017/02/02/inspecting-your-webpack-bundle/

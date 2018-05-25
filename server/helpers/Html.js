@@ -6,13 +6,14 @@ import Helmet from 'react-helmet';
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
 
 const Html = props => {
-  const { assets, content, store } = props;
+  const { assets, content, store, bundles} = props;
   const head = Helmet.renderStatic();
 
   console.log('>>>>>> HTML.JS > Object.keys(assets.styles): ', Object.keys(assets.styles));
   console.log('>>>>>> HTML.JS > Object.keys(assets.styles).length: ', Object.keys(assets.styles).length);
   console.log('>>>>>> HTML.JS > assets.styles: ', assets.styles);
   console.log('>>>>>> HTML.JS > assets: ', assets);
+  console.log('>>>>>> HTML.JS > bundles: ', bundles);
 
   // DEVELOPMENT -----------------------------------------------------------------------------------------
   // >>>>>> HTML.JS > Object.keys(assets.styles):  []
@@ -92,6 +93,7 @@ const Html = props => {
           ></script>
         )}
 
+
         {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
         {Object.keys(assets.javascript).length > 0 &&
           Object.keys(assets.javascript)
@@ -108,6 +110,7 @@ Html.propTypes = {
     styles: PropTypes.object,
     javascript: PropTypes.object
   }),
+  bundles: PropTypes.arrayOf(PropTypes.any),
   content: PropTypes.string,
   store: PropTypes.shape({
     getState: PropTypes.func
