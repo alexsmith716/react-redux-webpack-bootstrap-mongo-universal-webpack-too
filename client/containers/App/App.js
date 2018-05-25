@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { asyncConnect } from 'redux-connect';
+import { provideHooks } from 'redial';
+import { push } from 'react-router-redux';
 import renderRoutes from 'react-router-config/renderRoutes';
 import Helmet from 'react-helmet';
 
@@ -14,22 +17,20 @@ import config from '../../../server/config';
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< DOM attributes supported by React
 // https://github.com/facebook/react/issues/10772#issuecomment-333242375
 
-@asyncConnect([
-  {
-    promise: async ({ store: { dispatch, getState } }) => {
-      console.log('>>>>>>>>>>>>> APP.JS > asyncConnect > isAuthLoaded FALSE ??? <<<<<<<<<<<<<<<<<<<');
-      if (!isAuthLoaded(getState())) {
-        console.log('>>>>>>>>>>>>> APP.JS > asyncConnect > isAuthLoaded FALSE <<<<<<<<<<<<<<<<<');
-        await dispatch(loadAuth());
-      }
-      console.log('>>>>>>>>>>>>> APP.JS > asyncConnect > isInfoLoaded FALSE ??? <<<<<<<<<<<<<<<<<<<');
-      if (!isInfoLoaded(getState())) {
-        console.log('>>>>>>>>>>>>> APP.JS > asyncConnect > isInfoLoaded FALSE <<<<<<<<<<<<<<<<<');
-        await dispatch(loadInfo());
-      }
+@provideHooks({
+  fetch: async ({ store: { dispatch, getState } }) => {
+    console.log('>>>>>>>>>>>>> APP.JS > provideHooks > isAuthLoaded FALSE ??? <<<<<<<<<<<<<<<<<<<');
+    if (!isAuthLoaded(getState())) {
+      console.log('>>>>>>>>>>>>> APP.JS > provideHooks > isAuthLoaded FALSE <<<<<<<<<<<<<<<<<');
+      await dispatch(loadAuth()).catch(() => null);
+    }
+    console.log('>>>>>>>>>>>>> APP.JS > provideHooks > isInfoLoaded FALSE ??? <<<<<<<<<<<<<<<<<<<');
+    if (!isInfoLoaded(getState())) {
+      console.log('>>>>>>>>>>>>> APP.JS > provideHooks > isInfoLoaded FALSE <<<<<<<<<<<<<<<<<');
+      await dispatch(loadInfo()).catch(() => null);
     }
   }
-])
+})
 
 @connect(
   state => ({
@@ -37,17 +38,21 @@ import config from '../../../server/config';
     user: state.auth.user
   }),
   {
-    logout
+    logout, pushState: push 
   }
 )
 
+@withRouter
+
 export default class App extends Component {
+
   static propTypes = {
     user: PropTypes.shape({ email: PropTypes.string }),
     notifs: PropTypes.shape({ global: PropTypes.array }).isRequired,
     logout: PropTypes.func.isRequired,
     route: PropTypes.objectOf(PropTypes.any).isRequired,
-    location: PropTypes.objectOf(PropTypes.any).isRequired
+    location: PropTypes.objectOf(PropTypes.any).isRequired,
+    pushState: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -56,31 +61,40 @@ export default class App extends Component {
 
   static contextTypes = {
     store: PropTypes.object.isRequired,
-    router: PropTypes.shape({
-      history: PropTypes.object.isRequired
-    })
+    // router: PropTypes.shape({ history: PropTypes.object.isRequired })
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (!this.props.user && nextProps.user) {
-  //     this.context.router.history.push('/loginSuccess');
-  //   } else if (this.props.user && !nextProps.user) {
-  //     this.context.router.history.push('/');
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (!prevState.user && nextProps.user) {
+  //     const query = new URLSearchParams(nextProps.location.search);
+  //     nextProps.pushState(query.get('redirect') || '/login-success');
+  //     return {
+  //       user: nextProps.user
+  //     };
+  //   } else if (prevState.user && !nextProps.user) {
+  //     nextProps.pushState('/');
+  //     return {
+  //       user: null
+  //     };
+  //   }
+  //   return null;
+  // }
+
+  // state = {
+  //   user: null
+  // };
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.location !== prevProps.location) {
+  //     window.scrollTo(0, 0);
   //   }
   // }
-  // <span className="navbar-toggler-icon"></span>
-  // <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNzc3Nzc3IiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik0zIDE4aDE4di0ySDN2MnptMC01aDE4di0ySDN2MnptMC03djJoMThWNkgzeiIvPgo8L3N2Zz4=" alt="Nav Menu">
-  // <img src={iconBar36} alt="Nav Menu"/>
-
-  // <li className="nav-item">
-  //   <a className="nav-link" href="#"><span className={`fa fa-headphones ${stylesScss2.colorGoldLocal}`}></span><span className={stylesScss2.colorGoldLocal}>Headphones!</span></a>
-  // </li>
 
 
-  handleLogout = event => {
-    event.preventDefault();
-    this.props.logout();
-  };
+  // handleLogout = event => {
+  //   event.preventDefault();
+  //   this.props.logout();
+  // };
 
   render() {
 

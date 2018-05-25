@@ -28,9 +28,11 @@ module.exports = {
   output: {
     path: path.resolve(rootPath, 'build/public/assets'),
     publicPath: '/assets/',
-    filename: '[name].[hash].js',
+    // filename: '[name].[hash].js',
     // chunkFilename: '[name].[hash].js'
-    chunkFilename: '[name].[chunkhash].js',
+    // chunkFilename: '[name].[chunkhash].js',
+    filename: '[name]-[hash].js',
+    chunkFilename: '[name]-[chunkhash].chunk.js',
   },
 
   optimization: {
@@ -42,6 +44,9 @@ module.exports = {
     // runtimeChunk: 'single', // (true | 'single' | 'multiple') // create chunk which contains only the webpack runtime
     // occurrenceOrder: true,  // To keep filename consistent between different modes (for example building only)
   },
+
+  // webpack 4 removes the CommonsChunkPlugin in favor of two new options
+  // (optimization.splitChunks and optimization.runtimeChunk)
 
   // optimization: {
   //   splitChunks: {

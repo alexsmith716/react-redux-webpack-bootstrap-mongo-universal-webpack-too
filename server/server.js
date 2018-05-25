@@ -17,8 +17,14 @@ import serverConfig from './config';
 import headers from './utils/headers';
 import delay from 'express-delay';
 // import mongooseConnect from './mongo/mongooseConnect';
-import apiRouter from './api/apiRouter';
+import apiRouter from '../api/apiRouter';
 import mongoose from 'mongoose';
+
+import { ConnectedRouter } from 'react-router-redux';
+import { renderRoutes } from 'react-router-config';
+import Loadable from 'react-loadable';
+import { getBundles } from 'react-loadable/webpack';
+import { trigger } from 'redial';
 
 // #########################################################################
 
@@ -28,6 +34,10 @@ import { Provider } from 'react-redux';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter, matchPath } from 'react-router';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-connect';
+import { getChunks, waitChunks } from './utils/chunks';
+import asyncMatchRoutes from './utils/asyncMatchRoutes';
+import { ReduxAsyncConnect } from './components/ReduxAsyncConnect';
+import { Provider } from './components/Provider';
 
 import createMemoryHistory from 'history/createMemoryHistory';
 import createStore from '../client/redux/create';
@@ -165,7 +175,7 @@ export default function (parameters) {
   // #########################################################################
   
   // app.use(/\/api/, apiRouter);
-  app.use('/api', apiRouter);
+  app.use('../api', apiRouter);
   
   // #########################################################################
   
@@ -241,6 +251,8 @@ export default function (parameters) {
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! HTML <<<<<<<<<<<<<<<<<<');
   
       res.status(200).send(`<!doctype html>${ReactDOM.renderToString(html)}`);
+
+
     } catch (error) {
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > TRY > ERROR > error: ', error);
       if (error.name === 'RedirectError') {
