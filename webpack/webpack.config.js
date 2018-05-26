@@ -13,12 +13,6 @@ module.exports = {
       './client/index.entry.js',
     ],
     vendor: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router',
-      'react-router-dom',
-      'redux',
       'jquery',
       'popper.js',
       'bootstrap',
@@ -35,15 +29,15 @@ module.exports = {
     chunkFilename: '[name]-[chunkhash].chunk.js',
   },
 
-  optimization: {
-    splitChunks: {
-      automaticNameDelimiter: "-",
-      chunks: 'all',
-      minSize: 0,
-    },
-    // runtimeChunk: 'single', // (true | 'single' | 'multiple') // create chunk which contains only the webpack runtime
-    // occurrenceOrder: true,  // To keep filename consistent between different modes (for example building only)
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     automaticNameDelimiter: "-",
+  //     chunks: 'all',
+  //     minSize: 0,
+  //   },
+  //   // runtimeChunk: 'single', // (true | 'single' | 'multiple') // create chunk which contains only the webpack runtime
+  //   // occurrenceOrder: true,  // To keep filename consistent between different modes (for example building only)
+  // },
 
   // webpack 4 removes the CommonsChunkPlugin in favor of two new options
   // (optimization.splitChunks and optimization.runtimeChunk)
