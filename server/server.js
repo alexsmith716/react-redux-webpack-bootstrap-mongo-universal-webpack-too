@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -157,6 +158,15 @@ export default function (parameters) {
 
   // #########################################################################
 
+  app.use('/dlls/:dllName.js', (req, res, next) => {
+    fs.access(
+      path.join(__dirname, '..', 'build', 'public', 'assests', 'dlls', `${req.params.dllName}.js`),
+      fs.constants.R_OK,
+      err => (err ? res.send(`console.log('No dll file found (${req.originalUrl})')`) : next())
+    );
+  });
+
+
   app.use(compression());
   // app.use(express.static(path.join(__dirname, '../build/public')));
   app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
@@ -232,6 +242,7 @@ export default function (parameters) {
 
   // These filenames are required for <script src=.../> and <link rel="style" href=.../> tags in case of
   //  isomorphic (universal) rendering on the server-side.
+  // By default, chunk_info_filename is `webpack-chunks.json`
 
   app.use(async (req, res) => {
 

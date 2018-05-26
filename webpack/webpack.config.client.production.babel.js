@@ -25,9 +25,31 @@ const assetsPath = path.resolve(configuration.context, './build/public/assets');
 const serverPath = path.resolve(configuration.context, './build/server');
 
 // configuration.devtool = 'source-map';
-configuration.devtool = 'hidden-source-map';
+// configuration.devtool = 'hidden-source-map';
 
-configuration.optimization.minimizer = [
+// configuration.optimization.minimize = true;
+// configuration.optimization.minimizer = [];
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+configuration.plugins.push(
+
+  new CleanWebpackPlugin([bundleAnalyzerPath,visualizerPath,assetsPath,serverPath], { root: configuration.context }),
+
+  new webpack.DefinePlugin({
+    'process.env': {
+      CLIENT: JSON.stringify(false),
+      NODE_ENV  : JSON.stringify('production'),
+    },
+    __CLIENT__: false,
+    __SERVER__: true,
+    __DEVELOPMENT__: false,
+    __DEVTOOLS__: false,
+    __DLLS__: false,
+  }),
+
   new UglifyJsPlugin({
     // test: ,  // {RegExp|Array<RegExp>}   /\.js$/i  Test to match files against
     // include: ,  // {RegExp|Array<RegExp>}  undefined   Files to include
@@ -56,27 +78,7 @@ configuration.optimization.minimizer = [
     cssProcessor: require('cssnano'), // cssnano >>> default optimize \ minimize css processor 
     cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
     canPrint: true, // indicating if the plugin can print messages to the console (default true)
-  }),
-];
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-configuration.plugins.push(
-
-  new CleanWebpackPlugin([bundleAnalyzerPath,visualizerPath,assetsPath,serverPath], { root: configuration.context }),
-
-  new webpack.DefinePlugin({
-    'process.env': {
-      CLIENT: JSON.stringify(false),
-      NODE_ENV  : JSON.stringify('production'),
-    },
-    __CLIENT__: false,
-    __SERVER__: true,
-    __DEVELOPMENT__: false,
-    __DEVTOOLS__: false,
-  }),
+  }),  
 
   new ReactLoadablePlugin({
     filename: path.join(buildPath, 'react-loadable.json')

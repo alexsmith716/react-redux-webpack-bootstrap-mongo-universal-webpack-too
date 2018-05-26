@@ -15,6 +15,13 @@ const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugi
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
 const configuration = clientConfiguration(base_configuration, settings, { development: true });
 
+var validDLLs = helpers.isValidDLLs('vendor', assetsPath);
+
+if (process.env.WEBPACK_DLLS === '1' && !validDLLs) {
+  process.env.WEBPACK_DLLS = '0';
+  console.warn('webpack dlls disabled');
+}
+
 // https://github.com/webpack-contrib/webpack-serve/issues/81#issuecomment-378469110
 module.exports = configuration;
 
@@ -42,6 +49,7 @@ configuration.plugins.push(
     __SERVER__: false,
     __DEVELOPMENT__: true,
     __DEVTOOLS__: false,
+    __DLLS__: false
   }),
 
   // // Webpack Hot Reload
@@ -54,6 +62,10 @@ configuration.plugins.push(
   new webpack.NamedModulesPlugin(),
 
 );
+
+if (process.env.WEBPACK_DLLS === '1' && validDLLs) {
+  helpers.installVendorDLL(webpackConfig, 'vendor');
+}
 
 // network path for static files: fetch all statics from webpack development server
 configuration.output.publicPath = `http://${application_configuration.webpack.devserver.host}:${application_configuration.webpack.devserver.port}${configuration.output.publicPath}`;
