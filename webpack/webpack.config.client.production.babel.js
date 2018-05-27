@@ -81,7 +81,7 @@ configuration.plugins.push(
   }),  
 
   new ReactLoadablePlugin({
-    filename: path.join(buildPath, 'react-loadable.json')
+    filename: path.join(buildPath, 'loadable-chunks.json')
   }),
 
   // https://blog.etleap.com/2017/02/02/inspecting-your-webpack-bundle/

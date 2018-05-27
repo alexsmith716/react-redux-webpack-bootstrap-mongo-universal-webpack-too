@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 // import { provideHooks } from 'redial';
 // import MiniInfoBar from 'components/MiniInfoBar/MiniInfoBar';
-import { isLoaded as isInfoLoaded, load as loadInfo } from '../../redux/modules/info';
-
-@provideHooks({
-  fetch: ({ store: { dispatch, getState } }) =>
-    !isInfoLoaded(getState()) ? dispatch(loadInfo()).catch(() => null) : Promise.resolve()
-})
+// import { isLoaded as isInfoLoaded, load as loadInfo } from '../../redux/modules/info';
+// 
+// @provideHooks({
+//   fetch: ({ store: { dispatch, getState } }) =>
+//     !isInfoLoaded(getState()) ? dispatch(loadInfo()).catch(() => null) : Promise.resolve()
+// })
 // <MiniInfoBar />
 
 export default class About extends Component {
