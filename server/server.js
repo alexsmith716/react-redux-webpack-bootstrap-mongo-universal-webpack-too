@@ -50,9 +50,10 @@ import Html from './helpers/Html';
 import routes from '../client/routes';
 import { parse as parseUrl } from 'url';
 
-import stats from '../build/public/assets/react-loadable.json';
+const chunksPath = path.join(__dirname, '..', 'public', 'assets', 'loadable-chunks.json');
 
-const chunksPath = path.join(__dirname, '../public/assets', 'webpack-chunks.json');
+
+console.log('JJJJJJJJJJJJJJJJJJJJJJJJ!!!!!!! 1111: ', chunksPath)
 
 // #########################################################################
 
@@ -168,7 +169,6 @@ export default function (parameters) {
 
 
   app.use(compression());
-  // app.use(express.static(path.join(__dirname, '../build/public')));
   app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
   app.use(favicon(path.join(__dirname, '../public/static/favicon', 'favicon.ico')));
   // app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
@@ -294,20 +294,26 @@ export default function (parameters) {
       const component = (
         <Loadable.Capture report={moduleName => modules.push(moduleName)}>
           <Provider store={store} key="provider">
-            <StaticRouter location={url} context={context}>
-              <ReduxAsyncConnect routes={routes} helpers={{ client }} />
-            </StaticRouter>
+            <ConnectedRouter history={history}>
+              <StaticRouter location={url} context={context}>
+                <ReduxAsyncConnect routes={routes} helpers={{ client }} />
+              </StaticRouter>
+            </ConnectedRouter>
           </Provider>
         </Loadable.Capture>
       );
 
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > component: ', component);
+
       const content = ReactDOM.renderToString(component);
+
+      console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > content: ', content);
 
       if (context.url) {
         return res.redirect(302, context.url);
       }
 
-      const bundles = getBundles(stats, modules);
+      const bundles = getBundles(getChunks(), modules);
       const html = <Html assets={chunks} content={content} store={store} bundles={bundles} />;
 
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > html: ', html);
@@ -331,101 +337,101 @@ export default function (parameters) {
 
   // #########################################################################
 
-  server.listen( app.get('port'), serverConfig.host, () => {
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
-  });
+  // server.listen( app.get('port'), serverConfig.host, () => {
+  //   console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
+  // });
 
-  server.on('error', (err) => {
+  // server.on('error', (err) => {
 
-    if (err.syscall !== 'listen') {
-      console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
-    }
-
-    var bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port;
-
-    switch (err.code) {
-      case 'EACCES':
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
-        process.exit(1);
-        break;
-      case 'EADDRINUSE':
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
-        process.exit(1);
-        break;
-      default:
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
-    }
-  });
-
-  server.on('listening', () => {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port;
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
-  });
-
-  server.on('upgrade', (req, socket, head) => {
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
-    // proxy.ws(req, socket, head);
-  });
-
-
-  // (async () => {
-
-  //   try {
-  //     await Loadable.preloadAll();
-  //     await waitChunks(chunksPath);
-  //   } catch (error) {
-  //     console.log('Server preload error:', error);
+  //   if (err.syscall !== 'listen') {
+  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
   //   }
 
-  //   server.listen( app.get('port'), serverConfig.host, () => {
-  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
-  //   });
-  //   
-  //   server.on('error', (err) => {
-  //   
-  //     if (err.syscall !== 'listen') {
-  //       console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
-  //     }
-  //   
-  //     var bind = typeof port === 'string'
-  //       ? 'Pipe ' + port
-  //       : 'Port ' + port;
-  //   
-  //     switch (err.code) {
-  //       case 'EACCES':
-  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
-  //         process.exit(1);
-  //         break;
-  //       case 'EADDRINUSE':
-  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
-  //         process.exit(1);
-  //         break;
-  //       default:
-  //         console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
-  //     }
-  //   });
-  //   
-  //   server.on('listening', () => {
-  //     var addr = server.address();
-  //     var bind = typeof addr === 'string'
-  //       ? 'pipe ' + addr
-  //       : 'port ' + addr.port;
-  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
-  //   });
-  //   
-  //   // https://nodejs.org/api/net.html#net_class_net_socket
-  //   // https://nodejs.org/api/http.html#http_event_upgrade
-  //   server.on('upgrade', (req, socket, head) => {
-  //     console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
-  //     // proxy.ws(req, socket, head);
-  //   });
+  //   var bind = typeof port === 'string'
+  //     ? 'Pipe ' + port
+  //     : 'Port ' + port;
 
-  // })()
+  //   switch (err.code) {
+  //     case 'EACCES':
+  //       console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
+  //       process.exit(1);
+  //       break;
+  //     case 'EADDRINUSE':
+  //       console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
+  //       process.exit(1);
+  //       break;
+  //     default:
+  //       console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
+  //   }
+  // });
+
+  // server.on('listening', () => {
+  //   var addr = server.address();
+  //   var bind = typeof addr === 'string'
+  //     ? 'pipe ' + addr
+  //     : 'port ' + addr.port;
+  //   console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
+  // });
+
+  // server.on('upgrade', (req, socket, head) => {
+  //   console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
+  //   // proxy.ws(req, socket, head);
+  // });
+
+
+  (async () => {
+
+    try {
+      await Loadable.preloadAll();
+      await waitChunks(chunksPath);
+    } catch (error) {
+      console.log('Server preload error:', error);
+    }
+
+    server.listen( app.get('port'), serverConfig.host, () => {
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
+    });
+    
+    server.on('error', (err) => {
+    
+      if (err.syscall !== 'listen') {
+        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
+      }
+    
+      var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+    
+      switch (err.code) {
+        case 'EACCES':
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
+          process.exit(1);
+          break;
+        default:
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
+      }
+    });
+    
+    server.on('listening', () => {
+      var addr = server.address();
+      var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
+    });
+    
+    // https://nodejs.org/api/net.html#net_class_net_socket
+    // https://nodejs.org/api/http.html#http_event_upgrade
+    server.on('upgrade', (req, socket, head) => {
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
+      // proxy.ws(req, socket, head);
+    });
+
+  })()
 
 };
 

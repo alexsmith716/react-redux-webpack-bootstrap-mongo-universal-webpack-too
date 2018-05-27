@@ -6,6 +6,7 @@ import localForage from 'localforage';
 import { AppContainer as HotEnabler } from 'react-hot-loader';
 import { getStoredState } from 'redux-persist';
 import { ReduxAsyncConnect, Provider } from '../shared';
+import { ConnectedRouter } from 'react-router-redux';
 
 import Loadable from 'react-loadable';
 
@@ -47,9 +48,11 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>> CLIENT.JS > __DEVTOOLS__ !!!!!: ', __DEVTO
     ReactDOM.hydrate(
       <HotEnabler>
         <Provider store={store}>
-          <BrowserRouter>
-            <ReduxAsyncConnect routes={_routes} helpers={{ client }} />
-          </BrowserRouter>
+          <ConnectedRouter history={history}>
+            <BrowserRouter>
+              <ReduxAsyncConnect routes={_routes} helpers={{ client }} />
+            </BrowserRouter>
+          </ConnectedRouter>
         </Provider>
       </HotEnabler>
       , dest

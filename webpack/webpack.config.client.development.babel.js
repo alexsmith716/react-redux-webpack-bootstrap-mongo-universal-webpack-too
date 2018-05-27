@@ -56,7 +56,7 @@ configuration.plugins.push(
   // new webpack.HotModuleReplacementPlugin(),
 
   new ReactLoadablePlugin({
-    filename: path.join(configuration.output.publicPath, 'react-loadable.json')
+    filename: path.join(configuration.output.publicPath, 'loadable-chunks.json')
   }),
 
   new webpack.NamedModulesPlugin(),

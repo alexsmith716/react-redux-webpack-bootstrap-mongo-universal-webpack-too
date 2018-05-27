@@ -39,6 +39,10 @@ const Html = props => {
   //      vendor: '/assets/vendor.423863f32e02f2f88f2a.js',
   //      main: '/assets/main.423863f32e02f2f88f2a.js' },
   //   styles: { main: '/assets/main-741466ca48ed79dc2012.css' } }
+
+          //{__DLLS__ && <script key="dlls__vendor" src="/dlls/dll__vendor.js" charSet="UTF-8" />}
+
+       // {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
   
   return (
 
@@ -94,7 +98,7 @@ const Html = props => {
           ></script>
         )}
 
-        {__DLLS__ && <script key="dlls__vendor" src="/dist/dlls/dll__vendor.js" charSet="UTF-8" />}
+        {__DLLS__ && <script key="dlls__vendor" src="/dlls/dll__vendor.js" charSet="UTF-8" />}
 
         {bundles.map(bundle => bundle && <script src={config.assetsPath + bundle.file} key={bundle.id} />)}
 
