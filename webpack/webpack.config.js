@@ -6,19 +6,12 @@ const rootPath = path.resolve(__dirname, '..');
 module.exports = {
 
   context: rootPath,
-
   entry: {
     main: [
       './client/assets/scss/theme/theme.scss',
       './client/index.entry.js',
     ],
     vendor: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router',
-      'react-router-dom',
-      'redux',
       'jquery',
       'popper.js',
       'bootstrap',
@@ -28,20 +21,25 @@ module.exports = {
   output: {
     path: path.resolve(rootPath, 'build/public/assets'),
     publicPath: '/assets/',
-    filename: '[name].[hash].js',
     // chunkFilename: '[name].[hash].js'
-    chunkFilename: '[name].[chunkhash].js',
+    // chunkFilename: '[name].[chunkhash].js',
+    filename: '[name]-[hash].js',
+    // filename: '[name]-[chunkhash].js',
+    chunkFilename: '[name]-[chunkhash].chunk.js',
   },
 
-  optimization: {
-    splitChunks: {
-      automaticNameDelimiter: "-",
-      chunks: 'all',
-      minSize: 0,
-    },
-    // runtimeChunk: 'single', // (true | 'single' | 'multiple') // create chunk which contains only the webpack runtime
-    // occurrenceOrder: true,  // To keep filename consistent between different modes (for example building only)
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     automaticNameDelimiter: "-",
+  //     chunks: 'all',
+  //     minSize: 0,
+  //   },
+  //   // runtimeChunk: 'single', // (true | 'single' | 'multiple') // create chunk which contains only the webpack runtime
+  //   // occurrenceOrder: true,  // To keep filename consistent between different modes (for example building only)
+  // },
+
+  // webpack 4 removes the CommonsChunkPlugin in favor of two new options
+  // (optimization.splitChunks and optimization.runtimeChunk)
 
   // optimization: {
   //   splitChunks: {
@@ -50,6 +48,24 @@ module.exports = {
   //         test: /[\\/]node_modules[\\/]/,
   //         name: 'vendors',
   //         chunks: 'all'
+  //       }
+  //     }
+  //   }
+  // },
+
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       default: {
+  //         minChunks: 2,
+  //         priority: -20,
+  //         reuseExistingChunk: true
+  //       },
+  //       vendor: {
+  //         chunks: 'initial',
+  //         name: 'vendor',
+  //         priority: -10,
+  //         enforce: true
   //       }
   //     }
   //   }

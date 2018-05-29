@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const helpers = require('./helpers');
 const path = require('path');
 const base_configuration = require('./webpack.config');
 const application_configuration = require('../configuration');
@@ -7,12 +8,22 @@ const { clientConfiguration } = require('universal-webpack');
 
 const rootPath = path.resolve(__dirname, '..');
 
+// const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+
 // With `development: false` all CSS will be extracted into a file
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
 const configuration = clientConfiguration(base_configuration, settings, { development: true });
 
 // https://github.com/webpack-contrib/webpack-serve/issues/81#issuecomment-378469110
+// export default const configuration = ...
 module.exports = configuration;
+
+var validDLLs = helpers.isValidDLLs('vendor', configuration.output.path);
+
+if (process.env.WEBPACK_DLLS === '1' && !validDLLs) {
+  process.env.WEBPACK_DLLS = '0';
+  console.warn('>>>>>>>>>>>>>>>>>>>>>>>> webpack dlls disabled!! <<<<<<<<<<<<<<<<<<<<<<<<<<<');
+};
 
 // `webpack-serve` can't set the correct `mode` by itself.
 // https://github.com/webpack-contrib/webpack-serve/issues/94
@@ -22,6 +33,8 @@ configuration.mode = 'development';
 // configuration.devtool = 'cheap-eval-source-map'
 // configuration.devtool = 'source-map';
 configuration.devtool = 'inline-source-map';
+
+// configuration.output.filename = '[name]-[hash].js';
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,6 +56,10 @@ configuration.plugins.push(
   // // Webpack Hot Reload
   // new webpack.HotModuleReplacementPlugin(),
 
+  // new ReactLoadablePlugin({
+  //   filename: path.join(configuration.output.publicPath, 'loadable-chunks.json')
+  // }),
+
   new webpack.NamedModulesPlugin(),
 
 );
@@ -61,3 +78,7 @@ configuration.serve = {
     headers : { 'Access-Control-Allow-Origin': '*' }
   }
 }
+
+if (process.env.WEBPACK_DLLS === '1' && validDLLs) {
+  helpers.installVendorDLL(configuration, 'vendor');
+};

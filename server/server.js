@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -31,6 +32,8 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-connect';
 
 import createMemoryHistory from 'history/createMemoryHistory';
 import createStore from '../client/redux/create';
+
+import { trigger } from 'redial';
 
 import Html from './helpers/Html';
 import routes from '../client/routes';
@@ -95,6 +98,24 @@ process.on('unhandledRejection', (error, promise) => {
 export default function (parameters) {
 
   const app = new express();
+  const server = http.createServer(app);
+
+  const normalizePort = (val)  => {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+    return false;
+  };
+
+  // const port = normalizePort(process.env.PORT || serverConfig.port);
+  const port = 3000;
+  app.set('port', port);
 
   app.use((req, res, next) => {
     console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
@@ -103,7 +124,8 @@ export default function (parameters) {
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.url ++++++++: ', req.url);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.headers ++++: ', req.headers);
     console.log('>>>>>>>>>>>>>>>>> SERVER > REQ.session ++++: ', req.session);
-    console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
+    // console.log('>>>>>>>>>>>>>>>>> SERVER > process.env.SESSION_SECRET ++++: ', process.env.SESSION_SECRET);
+    console.log('>>>>>>>>>>>>>>>>> SERVER > $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ IN < $$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
     return next();
   });
   
@@ -119,12 +141,20 @@ export default function (parameters) {
   }
   
   // #########################################################################
+
+  app.use('/dlls/:dllName.js', (req, res, next) => {
+    fs.access(
+      path.join(__dirname, '..', 'build', 'public', 'assests', 'dlls', `${req.params.dllName}.js`),
+      fs.constants.R_OK,
+      err => (err ? res.send(`console.log('No dll file found (${req.originalUrl})')`) : next())
+    );
+  });
   
   app.use(compression());
-  // app.use(express.static(path.join(__dirname, '../build/public')));
   app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
   app.use(favicon(path.join(__dirname, '../public/static/favicon', 'favicon.ico')));
-  app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
+  // app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
+  app.use('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '../public/static/manifest/manifest.json')));
 
   // #########################################################################
   
@@ -181,26 +211,30 @@ export default function (parameters) {
 
     console.log('>>>>>>>>>>>>>>>> SERVER > CHUNKS !!!!!!!!!: ', chunks);
   
-    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! START !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! START !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
     const url = req.originalUrl || req.url;
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > url: ', url);
-  
+
     const location = parseUrl(url);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > location: ', location);
-  
+
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! > apiClient !!');
     const client = apiClient(req);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > apiClient !!');
-  
-    const history = createMemoryHistory({ initialEntries: [req.originalUrl] });
+
+    const history = createMemoryHistory({ initialEntries: [url] });
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > createMemoryHistory !!');
-  
+
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > history: '. history);
+
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! > createStore !!');
     const store = createStore(history, client);
     console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > createStore !!');
-  
-    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! END !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponentDone !! > store: ', store);
+
+    console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > SetUpComponent !! END !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
   
     const hydrate = () => {
       res.write('<!doctype html>');
@@ -239,7 +273,9 @@ export default function (parameters) {
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > html: ', html);
   
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > DID IT !! HTML <<<<<<<<<<<<<<<<<<');
-  
+
+      console.log('>>>>>>>>>>>>>>> SERVER > SERVER.JS > global.__DLLS__ >>>>>>>>>>>>>>>>>>>>: ', global.__DLLS__);
+
       res.status(200).send(`<!doctype html>${ReactDOM.renderToString(html)}`);
     } catch (error) {
       console.log('>>>>>>>>>>>>>>>> SERVER > APP.USE > ASYNC !! > TRY > ERROR > error: ', error);
@@ -253,71 +289,60 @@ export default function (parameters) {
 
   // #########################################################################
   
-  const normalizePort = (val)  => {
-  
-    var port = parseInt(val, 10);
-  
-    if (isNaN(port)) {
-      // named pipe
-      return val;
-    }
-  
-    if (port >= 0) {
-      // port number
-      return port;
-    }
-  
-    return false;
-  };
-  
-  // const port = normalizePort(process.env.PORT || serverConfig.port);
-  const port = 3000;
-  app.set('port', port);
-  
-  // http.createServer([requestListener]): Returns a new instance of http.Server
-  // const server = https.createServer(options, app).listen(app.get('port'), '', () => {
-  const server = http.createServer(app).listen( app.get('port'), serverConfig.host, () => {
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
-  });
-  
-  server.on('error', (err) => {
-  
-    if (err.syscall !== 'listen') {
-      console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
-    }
-  
-    var bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port;
-  
-    switch (err.code) {
-      case 'EACCES':
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
-        process.exit(1);
-        break;
-      case 'EADDRINUSE':
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
-        process.exit(1);
-        break;
-      default:
-        console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
-    }
-  });
-  
-  server.on('listening', () => {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port;
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
-  });
-  
-  // https://nodejs.org/api/net.html#net_class_net_socket
-  // https://nodejs.org/api/http.html#http_event_upgrade
-  server.on('upgrade', (req, socket, head) => {
-    console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
-    // proxy.ws(req, socket, head);
-  });
+  (async () => {
+
+    // try {
+    //   await Loadable.preloadAll();
+    //   const wc = await waitChunks(chunksPath);
+    //   // console.log('>>>>>>>>>>>>>>>>>>> waitChunks(chunksPath):', wc);
+    // } catch (error) {
+    //   console.log('Server preload error:', error);
+    // }
+
+    server.listen( app.get('port'), serverConfig.host, () => {
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Connected: ', server.address());
+    });
+    
+    server.on('error', (err) => {
+    
+      if (err.syscall !== 'listen') {
+        console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ', err);
+      }
+    
+      var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+    
+      switch (err.code) {
+        case 'EACCES':
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' requires elevated privileges');
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error: ' + bind + ' is already in use');
+          process.exit(1);
+          break;
+        default:
+          console.log('>>>>>>>>>>>>>>>> server.js > Express server error.code: ', err.code);
+      }
+    });
+    
+    server.on('listening', () => {
+      var addr = server.address();
+      var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Listening on: ', bind);
+    });
+    
+    // https://nodejs.org/api/net.html#net_class_net_socket
+    // https://nodejs.org/api/http.html#http_event_upgrade
+    server.on('upgrade', (req, socket, head) => {
+      console.log('>>>>>>>>>>>>>>>> server.js > Express server Upgrade <<<<<<<<<<<<<<<<');
+      // proxy.ws(req, socket, head);
+    });
+
+  })()
 
 };
 

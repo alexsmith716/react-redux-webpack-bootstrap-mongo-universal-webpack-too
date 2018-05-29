@@ -7,6 +7,8 @@ const Visualizer = require('webpack-visualizer-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { clientConfiguration } = require('universal-webpack');
 
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+
 const settings = require('./universal-webpack-settings');
 const base_configuration = require('./webpack.config');
 
@@ -14,15 +16,41 @@ const base_configuration = require('./webpack.config');
 // named '[name]-[contenthash].css' using `mini-css-extract-plugin`.
 const configuration = clientConfiguration(base_configuration, settings, { development: false, useMiniCssExtractPlugin: true });
 
+const buildPath = path.resolve(configuration.context, './build/public/assets');
+
 const bundleAnalyzerPath = path.resolve(configuration.context, './build/analyzers/bundleAnalyzer');
 const visualizerPath = path.resolve(configuration.context, './build/analyzers/visualizer');
 const assetsPath = path.resolve(configuration.context, './build/public/assets');
 const serverPath = path.resolve(configuration.context, './build/server');
 
-// configuration.devtool = 'source-map';
-configuration.devtool = 'hidden-source-map';
+configuration.devtool = 'source-map';
+// configuration.devtool = 'hidden-source-map';
 
-configuration.optimization.minimizer = [
+// configuration.optimization.minimize = true;
+// configuration.optimization.minimizer = [];
+
+configuration.output.filename = '[name]-[chunkhash].js';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+configuration.plugins.push(
+
+  new CleanWebpackPlugin([bundleAnalyzerPath,visualizerPath,assetsPath,serverPath], { root: configuration.context }),
+
+  new webpack.DefinePlugin({
+    'process.env': {
+      CLIENT: JSON.stringify(false),
+      NODE_ENV  : JSON.stringify('production'),
+    },
+    __CLIENT__: false,
+    __SERVER__: true,
+    __DEVELOPMENT__: false,
+    __DEVTOOLS__: false,
+    __DLLS__: false,
+  }),
+
   new UglifyJsPlugin({
     // test: ,  // {RegExp|Array<RegExp>}   /\.js$/i  Test to match files against
     // include: ,  // {RegExp|Array<RegExp>}  undefined   Files to include
@@ -52,25 +80,9 @@ configuration.optimization.minimizer = [
     cssProcessorOptions: { discardComments: { removeAll: true } }, // defaults to {}
     canPrint: true, // indicating if the plugin can print messages to the console (default true)
   }),
-];
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// PLUGINS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-configuration.plugins.push(
-
-  new CleanWebpackPlugin([bundleAnalyzerPath,visualizerPath,assetsPath,serverPath], { root: configuration.context }),
-
-  new webpack.DefinePlugin({
-    'process.env': {
-      CLIENT: JSON.stringify(false),
-      NODE_ENV  : JSON.stringify('production'),
-    },
-    __CLIENT__: false,
-    __SERVER__: true,
-    __DEVELOPMENT__: false,
-    __DEVTOOLS__: false,
+  new ReactLoadablePlugin({
+    filename: path.join(buildPath, 'loadable-chunks.json')
   }),
 
   // https://blog.etleap.com/2017/02/02/inspecting-your-webpack-bundle/

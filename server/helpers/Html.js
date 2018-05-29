@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
+import config from '../config';
 
 // https://reactjs.org/docs/dom-elements.html <<<<<<<<< 'dangerouslySetInnerHTML'
 
@@ -91,6 +92,8 @@ const Html = props => {
             charSet="UTF-8"
           ></script>
         )}
+
+        {__DLLS__ && <script key="dlls__vendor" src="/assets/dlls/dll__vendor.js" charSet="UTF-8" />}
 
         {/* (>>>>>>> JAVASCRIPTS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<) */}
         {Object.keys(assets.javascript).length > 0 &&
